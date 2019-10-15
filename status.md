@@ -8,3 +8,7 @@ FLAG YELLOW
 Status at 08-10-2019 :
 We have reviewed the stories for the analyst. There are more dashboard control oriented. We are currently specifying the roadmap and the last details of the component diagram that we will deliver tomorrox. 
 FLAG YELLOW
+
+Status at 15-10-2019
+We started some pocs, and find some documentation/tutorial for kibana and elasticsearch.
+FLAG GREEN 
