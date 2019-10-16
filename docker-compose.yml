@@ -1,0 +1,34 @@
+version: '2'
+services:
+  db:
+    image: postgres:latest
+    networks:
+      - tracker-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=postgres
+
+  client-service:
+    container_name: clientservice
+    build:
+      context: ""
+    image: clientservice:latest
+    expose:
+      - 8080
+    ports:
+      - "8080:8080"
+    links:
+      - db
+    depends_on:
+      - db
+    networks:
+      - tracker-postgres
+
+networks:
+  tracker-postgres:
+    external: true
+
+
