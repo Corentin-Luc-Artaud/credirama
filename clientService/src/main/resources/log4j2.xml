@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info" name="MyApp">
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout>
+                <Pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n</Pattern>
+            </PatternLayout>
+        </Console>
+        <File name="MyFile" fileName="logs/app.log">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+        </File>
+        <Http name="Splunk" url="http://dzdiscover.com:8088/services/collector/event">
+            <verifyHostname>false</verifyHostname>
+            <Property name="Authorization" value="Splunk AB40AC1E-D53E-4A40-854B-BE03596021DB"/>
+            <PatternLayout>
+                <Pattern>
+                    {
+                    "event": "LOGGING",
+                    "fields" : {
+                    "debug_level":"%p",
+                    "debug_timestamp":"%d{ISO8601}",
+                    "debug_thread":"%t",
+                    "debug_file":"%F",
+                    "debug_line":"%L",
+                    "debug_message":"%m"
+                    }}%n
+                </Pattern>
+            </PatternLayout>
+            <ignoreExceptions>false</ignoreExceptions>
+        </Http>
+    </Appenders>
+    <Loggers>
+        <Root level="info" additivity="false">
+            <AppenderRef ref="Splunk"/>
+        </Root>
+    </Loggers>
+</Configuration>
