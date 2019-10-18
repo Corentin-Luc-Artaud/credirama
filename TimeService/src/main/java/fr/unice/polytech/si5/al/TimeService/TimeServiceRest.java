@@ -1,29 +1,27 @@
 package fr.unice.polytech.si5.al.TimeService;
 
+import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDateTime;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 @RestController
-@RequestMapping("/")
+@RequestMapping(value = "/")
 public class TimeServiceRest {
     private LocalDateTime curTime;
 
     public TimeServiceRest() {
         this.curTime = LocalDateTime.now();
     }
-    
-    @PostMapping("/")
-    public void setTime(@RequestBody LocalDateTime time) {
-        curTime = time;
+
+    @PostMapping(value = "/", consumes = "text/plain")
+    public void setTime(@RequestBody String string) {
+        System.out.println("Accessed POST");
+        curTime = LocalDateTime.parse(string);
     }
 
-    @GetMapping("/")
+    @GetMapping(value = "/")
     public LocalDateTime getTime() {
+        System.out.println("Accessed GET");
         return curTime;
     }
 }
