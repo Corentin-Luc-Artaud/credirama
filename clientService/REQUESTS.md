@@ -4,10 +4,12 @@ build artifacts and starts containers
 Request to add client :
 - POST http://localhost:8080/clients/
 - JSON body example :
+```
 {
-	"firstName": "Sami",
-	"lastName": "Lazrak",
-	"city": "Nice",
-	"height": "175",
-	"weight": "70"
+  "firstName": "Sami",
+  "lastName": "Lazrak",
+  "city": "Nice",
+  "height": "175",
+  "weight": "70"
 }
+```
