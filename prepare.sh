@@ -8,9 +8,6 @@ else
   echo "No such container"
 fi
 
-# CREATE NETWORK IN IT DOESNT EXIST
-docker network ls|grep tracker-postgres > /dev/null || docker network create tracker-postgres
-
 result=$( docker images -q clientservice:latest )
 echo "Deleting clientservice:latest image"
 if [[ -n "$result" ]]; then
@@ -19,10 +16,23 @@ else
   echo "No such container"
 fi
 
+result=$( docker images -q timeservice:latest )
+echo "Deleting timeservice:latest image"
+if [[ -n "$result" ]]; then
+  docker rmi timeservice:latest
+else
+  echo "No such container"
+fi
+
 cd  ./clientService
 echo "Building clientservice:latest image"
 mvn clean package -DskipTests=true
 docker build -t clientservice:latest .
+
+cd  ../TimeService
+echo "Building timeservice:latest image"
+mvn clean package -DskipTests=true
+docker build -t timeservice:latest .
 
 # RUN DOCKER-COMPOSE
 cd ..
