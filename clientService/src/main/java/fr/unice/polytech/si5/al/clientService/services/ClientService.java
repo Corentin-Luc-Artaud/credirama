@@ -15,7 +15,11 @@ public class ClientService {
     @Autowired
     private AccountCreator accountCreator;
 
+    @Autowired
+    private TimeService timeService;
+
     public String addNewClient(Client client) {
+        client.setCreationTime(timeService.getCurrentTime());
         long idNewClient = clientRegisterer.addNewClient(client);
         accountCreator.createNewAccount(idNewClient);
         return "You have been registered successfully";

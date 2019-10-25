@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -31,8 +32,15 @@ public class Client {
     String city;
 
     @NotNull
-    int height;
+    double height;
 
     @NotNull
-    int weight;
+    double weight;
+
+    LocalDateTime creationTime;
+
+    public void setCreationTime(LocalDateTime creationTime) {
+        this.creationTime = creationTime;
+    }
+
 }

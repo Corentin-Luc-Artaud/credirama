@@ -31,9 +31,7 @@ public class ClientRegisterer {
 
         try {
             this.kafkaProducer.sendMessage("client", gson.toJson(newClient));
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
         return newClient.getId();
@@ -41,8 +39,8 @@ public class ClientRegisterer {
 
     @PostConstruct
     public void onInit(){
-        String kafkaBrokerAdress = "kafka:9093";
-        this.kafkaProducer = new Producer(kafkaBrokerAdress);
+        String kafkaBrokerAddress = "kafka:9093";
+        this.kafkaProducer = new Producer(kafkaBrokerAddress);
         this.gson = new Gson();
     }
 }
