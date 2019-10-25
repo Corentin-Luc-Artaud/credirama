@@ -14,14 +14,15 @@ public class TimeServiceRest {
     }
 
     @PostMapping(value = "/", consumes = "text/plain")
-    public void setTime(@RequestBody String string) {
-        System.out.println("Accessed POST");
+    public String setTime(@RequestBody String string) {
+        System.out.println("Accessed POST - " + string);
         curTime = LocalDateTime.parse(string);
+        return "OK";
     }
 
     @GetMapping(value = "/")
     public LocalDateTime getTime() {
-        System.out.println("Accessed GET");
+        System.out.println("Accessed GET - " + curTime);
         return curTime;
     }
 }

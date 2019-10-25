@@ -27,4 +27,4 @@ docker build -t clientservice:latest .
 # RUN DOCKER-COMPOSE
 cd ..
 echo "Running Docker compose"
-docker-compose up
+docker-compose up --build
