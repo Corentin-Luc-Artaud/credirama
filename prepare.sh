@@ -19,10 +19,19 @@ else
   echo "No such container"
 fi
 
-cd  ./clientService
+cd clientService
 echo "Building clientservice:latest image"
 mvn clean package -DskipTests=true
 docker build -t clientservice:latest .
+
+cd TimeService
+echo "Building timeservice:latest image"
+mvn clean package -DskipTests=true
+docker build -t timeservice:latest .
+
+cd generator
+echo "Packaging generator"
+mvn clean package -DskipTests=true
 
 # RUN DOCKER-COMPOSE
 cd ..
