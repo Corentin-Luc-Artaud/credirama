@@ -1,7 +1,23 @@
 FROM openjdk:8-jdk-alpine
+MAINTAINER WALID LARABI
 
-ADD target/clientService-0.0.1-SNAPSHOT.jar clientServiceApp.jar
+## problems fixing links
+# https://chaseonsoftware.com/notes_to_self/exec_user_process_docker/
+# https://devopscube.com/run-scripts-docker-arguments/
+# https://medium.com/@d.lopez.j/easily-connecting-your-spring-boot-applications-to-the-elastic-stack-with-log4j2-1809e81c6a2e
 
-ENTRYPOINT ["java", "-jar", "clientServiceApp.jar"]
+# Install cURL & bash
+RUN apk --no-cache add curl
+RUN apk --no-cache add bash
+
+
+COPY target/clientService-0.0.1-SNAPSHOT.jar /clientServiceApp.jar
+COPY ./wait-for-es.sh /
+WORKDIR /
+RUN ls
+RUN chmod +x /wait-for-es.sh
+
+# ENTRYPOINT ["java", "-jar", "/clientServiceApp.jar"]
+ENTRYPOINT ["/bin/bash", "/wait-for-es.sh"]
 
 EXPOSE 8080

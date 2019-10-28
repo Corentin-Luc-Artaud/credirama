@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # DELETE ALREADY EXISTING IMAGES
 result=$( docker ps -a -q )
 echo "Stopping and deleting containers"
@@ -37,4 +38,4 @@ docker build -t timeservice:latest .
 # RUN DOCKER-COMPOSE
 cd ..
 echo "Running Docker compose"
-docker-compose up --build
+docker-compose up --build --force-recreate

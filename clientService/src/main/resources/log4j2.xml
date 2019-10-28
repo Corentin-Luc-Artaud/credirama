@@ -1,39 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="info" name="MyApp">
+<Configuration status="INFO">
     <Appenders>
         <Console name="console" target="SYSTEM_OUT">
             <PatternLayout>
                 <Pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n</Pattern>
             </PatternLayout>
         </Console>
-        <File name="MyFile" fileName="logs/app.log">
-            <PatternLayout>
-                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
-            </PatternLayout>
-        </File>
-        <Http name="Splunk" url="http://dzdiscover.com:8088/services/collector/event">
+
+        <Http name="ElasticSearchAppender" url="http://elasticsearch:9200/applogs/_doc">
+            <Property name="Content-Type" value="application/json" />
             <verifyHostname>false</verifyHostname>
-            <Property name="Authorization" value="Splunk AB40AC1E-D53E-4A40-854B-BE03596021DB"/>
-            <PatternLayout>
-                <Pattern>
-                    {
-                    "event": "LOGGING",
-                    "fields" : {
-                    "debug_level":"%p",
-                    "debug_timestamp":"%d{ISO8601}",
-                    "debug_thread":"%t",
-                    "debug_file":"%F",
-                    "debug_line":"%L",
-                    "debug_message":"%m"
-                    }}%n
-                </Pattern>
-            </PatternLayout>
-            <ignoreExceptions>false</ignoreExceptions>
+            <JsonLayout complete="false" compact="false">
+                <KeyValuePair key="myCustomField" value="myCustomValue" />
+            </JsonLayout>
         </Http>
+
+
+
     </Appenders>
+
+
     <Loggers>
-        <Root level="info" additivity="false">
-            <AppenderRef ref="Splunk"/>
+        <Logger name="LOG_TO_ES" level="INFO" additivity="false">
+            <AppenderRef ref="ElasticSearchAppender" />
+        </Logger>
+        <Logger name="LOG_TO_FILE" level="INFO" additivity="false">
+            <AppenderRef ref="FileAppender" />
+        </Logger>
+        <Root level="warning">
+            <AppenderRef ref="console" />
         </Root>
     </Loggers>
 </Configuration>
