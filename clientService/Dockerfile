@@ -20,4 +20,6 @@ RUN chmod +x /wait-for-es.sh
 # ENTRYPOINT ["java", "-jar", "/clientServiceApp.jar"]
 ENTRYPOINT ["/bin/bash", "/wait-for-es.sh"]
 
+CMD curl -XPUT 'http://elasticsearch:9200/credirama/'
+
 EXPOSE 8080

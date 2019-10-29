@@ -25,7 +25,7 @@ public class ClientService {
     public String addNewClient(Client client) {
         // logger.info("hello");
         String log = "{\n" +
-                "  \"value\": \"hello\"\n" +
+                "  \"value\": \"hello\"" +
                 "}";
         root_logger.info(log);
         es_logger.info(log);

@@ -7,16 +7,13 @@
             </PatternLayout>
         </Console>
 
-        <Http name="ElasticSearchAppender" url="http://elasticsearch:9200/applogs/_doc">
+        <Http name="ElasticSearchAppender" url="http://elasticsearch:9200/credirama/_doc">
             <Property name="Content-Type" value="application/json" />
             <verifyHostname>false</verifyHostname>
-            <JsonLayout complete="false" compact="false">
-                <KeyValuePair key="myCustomField" value="myCustomValue" />
+            <JsonLayout complete="false" compact="true">
+                <KeyValuePair key="application" value="credirama" />
             </JsonLayout>
         </Http>
-
-
-
     </Appenders>
 
 

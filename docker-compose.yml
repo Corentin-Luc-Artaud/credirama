@@ -43,6 +43,7 @@ services:
     depends_on:
       - elasticsearch
 
+
   db:
     image: postgres:latest
     ports:
