@@ -25,6 +25,10 @@ else
   echo "No such container"
 fi
 
+cd  ./models
+echo "Building models"
+mvn clean package install -DskipTests=true
+
 cd  ./clientService
 echo "Building clientservice:latest image"
 mvn clean package install -DskipTests=true
