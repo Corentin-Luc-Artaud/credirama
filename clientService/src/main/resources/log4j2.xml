@@ -10,7 +10,8 @@
         <Http name="ElasticSearchAppender" url="http://elasticsearch:9200/credirama/_doc">
             <Property name="Content-Type" value="application/json" />
             <verifyHostname>false</verifyHostname>
-            <JsonLayout complete="false" compact="true">
+            <JsonLayout complete="true" compact="true">
+                <KeyValuePair key="@timestamp" value="$${date:yyyy-MM-dd'T'HH:mm:ss.SSSXXX}"/>
                 <KeyValuePair key="application" value="credirama" />
             </JsonLayout>
         </Http>
@@ -21,10 +22,7 @@
         <Logger name="LOG_TO_ES" level="INFO" additivity="false">
             <AppenderRef ref="ElasticSearchAppender" />
         </Logger>
-        <Logger name="LOG_TO_FILE" level="INFO" additivity="false">
-            <AppenderRef ref="FileAppender" />
-        </Logger>
-        <Root level="warning">
+        <Root level="info">
             <AppenderRef ref="console" />
         </Root>
     </Loggers>

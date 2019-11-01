@@ -23,12 +23,15 @@ done
 health="$(curl -fsSL "$host/_cat/health?h=status")"
 health="$(echo "$health" | sed -r 's/^[[:space:]]+|[[:space:]]+$//g')" # trim whitespace (otherwise we'll have "green ")
 
-until [ "$health" = 'green' ] | [ "$health" = "yellow" ]; do
+until [ "$health" = "green" ] || [ "$health" = "yellow" ]; do
     health="$(curl -fsSL "$host/_cat/health?h=status")"
     health="$(echo "$health" | sed -r 's/^[[:space:]]+|[[:space:]]+$//g')" # trim whitespace (otherwise we'll have "green ")
     >&2 echo "Elastic Search is unavailable (health status is : $health and not green)- sleeping ..."
     sleep 1
 done
+
+# echo "creating kibana index pattern"
+# curl -X POST "localhost:5601/api/saved_objects/index-pattern/credirama" -H 'kbn-xsrf: true' -H 'Content-Type: application/json' -d'{"attributes": {"title": "credirama"}}'
 
 >&2 echo "Elastic Search is up"
 exec $cmd
