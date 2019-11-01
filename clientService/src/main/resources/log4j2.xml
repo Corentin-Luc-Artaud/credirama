@@ -13,7 +13,7 @@
             <verifyHostname>false</verifyHostname>
             <PatternLayout>
                 <Pattern>{
-                    "@timestamp": "%d{MM/dd/yyyy HH:mm:ss:SSSS}",
+                    "@timestamp": "${date:yyyy-MM-dd'T'HH:mm:ss.SSSXXX}",
                     "class":"%C",
                     "file":"%F",
                     "level":"%5p",
@@ -25,7 +25,7 @@
                     "source_host":"%X{sourceHost}",
                     "method":"%M",
                     "thread_name":"%t",
-                    "message": %m
+                    "event": %m
                     }%n</Pattern>
             </PatternLayout>
 

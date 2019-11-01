@@ -24,11 +24,8 @@ public class ClientService {
 
     public String addNewClient(Client client) {
         // logger.info("hello");
-        String log = "{\n" +
-                "  \"value\": \"hello\"" +
-                "}";
-        root_logger.info(log);
-        es_logger.info(log);
+        root_logger.info(client);
+        es_logger.info(client);
         client.setCreationTime(timeService.getCurrentTime());
         long idNewClient = clientRegisterer.addNewClient(client);
         accountCreator.createNewAccount(idNewClient);
