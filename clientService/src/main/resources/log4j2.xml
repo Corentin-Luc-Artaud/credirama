@@ -35,5 +35,11 @@
         <Root level="info" additivity="false">
             <AppenderRef ref="Splunk"/>
         </Root>
+        <Root level="debug" additivity="false">
+            <AppenderRef ref="console" />
+        </Root>
+        <Root level="error" additivity="false">
+            <AppenderRef ref="console" />
+        </Root>
     </Loggers>
 </Configuration>
