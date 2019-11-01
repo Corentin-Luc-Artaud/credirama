@@ -27,8 +27,7 @@ fi
 
 cd  ./models
 echo "Building models"
-#mvn clean package install -DskipTests=true
-
+mvn clean package install -DskipTests=true
 
 cd ../generator
 echo "Packaging generator"
