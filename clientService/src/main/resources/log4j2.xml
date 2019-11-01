@@ -7,10 +7,35 @@
             </PatternLayout>
         </Console>
 
-        <Http name="ElasticSearchAppender" url="http://elasticsearch:9200/credirama/_doc">
+
+        <Http name="ElasticSearchAppender1" url="http://elasticsearch:9200/credirama/_doc">
             <Property name="Content-Type" value="application/json" />
             <verifyHostname>false</verifyHostname>
-            <JsonLayout complete="true" compact="true">
+            <PatternLayout>
+                <Pattern>{
+                    "@timestamp": "%d{MM/dd/yyyy HH:mm:ss:SSSS}",
+                    "class":"%C",
+                    "file":"%F",
+                    "level":"%5p",
+                    "line_number":"%L",
+                    "logger_name":"frontEndAuditLog",
+                    "ipAddress":"%X{ipAddress}",
+                    "requestId":"%X{requestId}",
+                    "sessionId":"%X{sessionId}",
+                    "source_host":"%X{sourceHost}",
+                    "method":"%M",
+                    "thread_name":"%t",
+                    "message": %m
+                    }%n</Pattern>
+            </PatternLayout>
+
+
+        </Http>
+
+        <Http name="ElasticSearchAppender2" url="http://elasticsearch:9200/credirama/_doc">
+            <Property name="Content-Type" value="application/json" />
+            <verifyHostname>false</verifyHostname>
+            <JsonLayout objectMessageAsJsonObject="true" complete="true" compact="false" locationInfo="true">
                 <KeyValuePair key="@timestamp" value="$${date:yyyy-MM-dd'T'HH:mm:ss.SSSXXX}"/>
                 <KeyValuePair key="application" value="credirama" />
             </JsonLayout>
@@ -20,7 +45,7 @@
 
     <Loggers>
         <Logger name="LOG_TO_ES" level="INFO" additivity="false">
-            <AppenderRef ref="ElasticSearchAppender" />
+            <AppenderRef ref="ElasticSearchAppender1" />
         </Logger>
         <Root level="info">
             <AppenderRef ref="console" />
