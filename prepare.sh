@@ -25,9 +25,13 @@ else
   echo "No such container"
 fi
 
-cd clientService
+cd  models
+echo "Building models"
+mvn clean package install -DskipTests=true
+
+cd ../clientService
 echo "Building clientservice:latest image"
-mvn clean package -DskipTests=true
+mvn clean package install -DskipTests=true
 docker build -t clientservice:latest .
 
 cd  ../TimeService
