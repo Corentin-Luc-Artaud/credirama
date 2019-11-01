@@ -27,9 +27,9 @@ fi
 
 cd  ./models
 echo "Building models"
-mvn clean package install -DskipTests=true
+#mvn clean package install -DskipTests=true
 
-cd  ./clientService
+cd  ../clientService
 echo "Building clientservice:latest image"
 mvn clean package install -DskipTests=true
 docker build -t clientservice:latest .
