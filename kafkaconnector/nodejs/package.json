@@ -1,0 +1,13 @@
+{
+  "name": "kafkaconnector",
+  "version": "1.0.0",
+  "description": "kafka consumer to elastic search",
+  "main": "kafka-elastic.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": "Sami Lazrak",
+  "license": "ISC"
+}

@@ -112,10 +112,19 @@ services:
     ports:
       - "8081:8081"
 
-  streamsets:
-    image: streamsets/datacollector
-    ports:
-      - "18630:18630"
+#  streamsets:
+#    image: streamsets/datacollector
+#    ports:
+#      - "18630:18630"
+
+  kafka-connector:
+    container_name: kafkaconnector
+    build:
+      context: kafkaconnector/nodejs/.
+    image: kafkaconnector:latest
+    depends_on:
+      - client-service
+
 
 volumes:
   elasticsearch:
