@@ -13,7 +13,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Map;
 
-import static fr.unice.polytech.creditrama.Utils.*;
+import static fr.unice.polytech.creditrama.Utils.pickFrom;
+import static fr.unice.polytech.creditrama.Utils.randIntBetween;
 import static fr.unice.polytech.creditrama.clients.enums.Nationality.FR;
 import static java.time.LocalDate.now;
 import static java.time.LocalDate.ofYearDay;
@@ -23,7 +24,6 @@ import static java.time.LocalDate.ofYearDay;
 @With
 @AllArgsConstructor
 @EqualsAndHashCode
-@ToString
 public class Client {
 
     private static final Faker faker = new Faker();
@@ -145,5 +145,16 @@ public class Client {
             setHeight(randIntBetween(125, 185));
         else if (age > 16)
             setHeight(randIntBetween(150, 195));
+    }
+
+    @Override
+    public String toString() {
+        return '{' +
+                "\"firstName\":\"" + firstName + '\"' +
+                "\"lastName\":\"" + lastName + '\"' +
+                "\"city\":\"" + city + '\"' +
+                "\"weight\":" + weight +
+                "\"height\":" + height +
+                '}';
     }
 }

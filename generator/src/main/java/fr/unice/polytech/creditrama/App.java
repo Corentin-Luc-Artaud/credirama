@@ -1,6 +1,5 @@
 package fr.unice.polytech.creditrama;
 
-import com.google.gson.JsonObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.client.RestTemplate;
@@ -34,15 +33,7 @@ public class App {
             try {
                 URL url = new URL(host + "/clients/");
                 RestTemplate restTemplate = new RestTemplate();
-
-                JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("firstName", client.getFirstName());
-                jsonObject.addProperty("lastName", client.getLastName());
-                jsonObject.addProperty("city", client.getCity());
-                jsonObject.addProperty("height", client.getHeight());
-                jsonObject.addProperty("weight", client.getWeight());
-
-                restTemplate.postForEntity(url.toString(), jsonObject, String.class);
+                restTemplate.postForEntity(url.toString(), client, String.class);
             } catch (Exception e) {
                 e.printStackTrace();
             }
