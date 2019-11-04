@@ -125,6 +125,32 @@ services:
     depends_on:
       - client-service
 
+  launch-barebone:
+    image: dadarek/wait-for-dependencies
+    depends_on:
+      - kafka
+      - zookeeper
+      - elasticsearch
+      - kibana
+      - db
+    command: 
+      - zookeeper:2181
+      - kafka:9092
+      - db:5432
+      - elasticsearch:9200
+      - kibana:5601
+
+  launch-services:
+    image: dadarek/wait-for-dependencies
+    depends_on:
+      - kafka-connector
+      - client-service
+      - time-service
+    command: 
+      - time-service:8081
+      - client-service:8080
+
+
 
 volumes:
   elasticsearch:
