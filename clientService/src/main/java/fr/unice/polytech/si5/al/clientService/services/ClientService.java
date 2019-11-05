@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ClientService {
-    private static final Logger es_logger = LogManager.getLogger("LOG_TO_ES");
     private static final Logger root_logger = LogManager.getLogger(ClientService.class);
 
     @Autowired
@@ -23,9 +22,7 @@ public class ClientService {
     private TimeService timeService;
 
     public String addNewClient(Client client) {
-        // logger.info("hello");
         root_logger.info(client);
-        es_logger.info(client);
         client.setCreationTime(timeService.getCurrentTime());
         long idNewClient = clientRegisterer.addNewClient(client);
         accountCreator.createNewAccount(idNewClient);

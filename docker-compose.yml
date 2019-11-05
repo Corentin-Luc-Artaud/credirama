@@ -55,12 +55,14 @@ services:
 
   zookeeper:
     image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
     expose:
       - "2181"
 
 
   kafka:
-    image: wurstmeister/kafka
+    image: wurstmeister/kafka:latest
     ports:
       - "9092:9092"
     expose:
@@ -109,6 +111,20 @@ services:
       - 8081
     ports:
       - "8081:8081"
+
+#  streamsets:
+#    image: streamsets/datacollector
+#    ports:
+#      - "18630:18630"
+
+  kafka-connector:
+    container_name: kafkaconnector
+    build:
+      context: kafkaconnector/nodejs/.
+    image: kafkaconnector:latest
+    depends_on:
+      - client-service
+
 
 volumes:
   elasticsearch:

@@ -1,7 +1,9 @@
 package fr.unice.polytech.si5.al.models.events;
 
 import com.google.gson.Gson;
+import lombok.Builder;
 
+@Builder
 public class CrediramaEvent {
     private EventName eventName;
     private EventPhase eventPhase;

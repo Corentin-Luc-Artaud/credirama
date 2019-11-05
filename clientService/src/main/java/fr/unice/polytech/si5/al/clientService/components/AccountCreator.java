@@ -1,11 +1,12 @@
 package fr.unice.polytech.si5.al.clientService.components;
 
-import fr.unice.polytech.si5.al.clientService.models.BankAccount;
-import fr.unice.polytech.si5.al.clientService.repositories.BankAccountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import fr.unice.polytech.si5.al.clientService.models.BankAccount;
+import fr.unice.polytech.si5.al.clientService.repositories.BankAccountRepository;
 
 @Component
 public class AccountCreator {

@@ -25,9 +25,13 @@ else
   echo "No such container"
 fi
 
-cd  models
+cd  ./models
 echo "Building models"
 mvn clean package install -DskipTests=true
+
+cd ../generator
+echo "Packaging generator"
+mvn clean package -DskipTests=true
 
 cd ../clientService
 echo "Building clientservice:latest image"
@@ -39,9 +43,6 @@ echo "Building timeservice:latest image"
 mvn clean package -DskipTests=true
 docker build -t timeservice:latest .
 
-cd ../generator
-echo "Packaging generator"
-mvn clean package -DskipTests=true
 
 # RUN DOCKER-COMPOSE
 cd ..
