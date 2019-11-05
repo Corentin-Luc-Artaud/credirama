@@ -7,3 +7,5 @@ Status at 15-10-2019 We started some pocs, and find some documentation/tutorial 
 Status at 22-10-2019 We need to progress on the integration of our pocs to get our walking skeletton ! FLAG GREEN
 
 Status at 29-10-2019 Elastic search and kibana are integrated with the docker-compose. need to add a connector between kafka and ELK, and begin implementing MVP scenario code. FLAG GREEN
+
+Status at 05-11-2019 Final run to finish TimeLion configurations and going to add Customer Transactions ! Also preparing presentation for Friday :). We lost a bit our group communication routine because of other projects interferences so FLAG YELLOW
