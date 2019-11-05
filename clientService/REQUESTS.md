@@ -13,3 +13,11 @@ Request to add client :
   "weight": "70"
 }
 ```
+- request to add transaction :
+```
+{
+  "isClient": 1,
+  "idAccount": 1,
+  "difference": 100
+}
+```
