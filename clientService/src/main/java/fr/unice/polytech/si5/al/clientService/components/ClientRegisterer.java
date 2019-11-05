@@ -13,6 +13,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.PostConstruct;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Component
@@ -43,6 +47,14 @@ public class ClientRegisterer {
             e.printStackTrace();
         }
         return newClient.getId();
+    }
+
+    public List<Client> getClients() {
+        List<Client> res = new ArrayList<>();
+        for (Client client : clientRepository.findAll()) {
+            res.add(client);
+        }
+        return res;
     }
 
     @PostConstruct

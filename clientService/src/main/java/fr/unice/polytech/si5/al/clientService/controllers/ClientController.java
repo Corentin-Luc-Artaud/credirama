@@ -23,4 +23,11 @@ public class ClientController {
 
         return new ResponseEntity(clientService.addNewClient(client), HttpStatus.OK);
     }
+
+    @GetMapping(value = "/")
+    public ResponseEntity getClients() {
+        System.out.println("Access GET");
+
+        return new ResponseEntity(clientService.getAllClients().toString(), HttpStatus.OK);
+    }
 }

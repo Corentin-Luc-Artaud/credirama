@@ -134,3 +134,5 @@ buildNumber.properties
 **.settings/
 
 **.vscode
+
+**dumps/**
