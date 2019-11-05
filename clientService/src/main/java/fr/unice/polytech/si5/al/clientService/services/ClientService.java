@@ -28,8 +28,9 @@ public class ClientService {
         root_logger.info(client);
         client.setCreationTime(timeService.getCurrentTime());
         long idNewClient = clientRegisterer.addNewClient(client);
-        accountCreator.createNewAccount(idNewClient);
-        return "You have been registered successfully";
+        long idAccount = accountCreator.createNewAccount(idNewClient);
+        return "You have been registered successfully : your new account is " + idAccount + " " +
+                "and your client id is " + idNewClient;
     }
 
     public List<Client> getAllClients() {

@@ -40,6 +40,7 @@ public class ClientRegisterer {
                 .eventName(EventName.CLIENT_SUBSCRITION)
                 .eventPhase(EventPhase.PRODUCTION)
                 .payload(gson.toJson(newClient))
+                .timestamp(System.currentTimeMillis())
                 .build();
         try {
             this.kafkaProducer.sendMessage("client", gson.toJson(eventMessage));
