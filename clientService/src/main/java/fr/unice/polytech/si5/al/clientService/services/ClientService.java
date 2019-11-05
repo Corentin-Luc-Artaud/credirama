@@ -3,6 +3,9 @@ package fr.unice.polytech.si5.al.clientService.services;
 import fr.unice.polytech.si5.al.clientService.components.AccountCreator;
 import fr.unice.polytech.si5.al.clientService.components.ClientRegisterer;
 import fr.unice.polytech.si5.al.clientService.models.Client;
+
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +30,9 @@ public class ClientService {
         long idNewClient = clientRegisterer.addNewClient(client);
         accountCreator.createNewAccount(idNewClient);
         return "You have been registered successfully";
+    }
+
+    public List<Client> getAllClients() {
+        return clientRegisterer.getClients();
     }
 }

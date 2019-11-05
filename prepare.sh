@@ -43,8 +43,13 @@ echo "Building timeservice:latest image"
 mvn clean package -DskipTests=true
 docker build -t timeservice:latest .
 
+cd ../kafkaconnector
+echo "Building kafkaconnector:latest image"
+docker build-t kafkaconnector:latest
+
 
 # RUN DOCKER-COMPOSE
 cd ..
 echo "Running Docker compose"
-docker-compose up --build --force-recreate
+#docker-compose build --force-recreate
+docker-compose up launch-barebone && docker-compose up launch-services

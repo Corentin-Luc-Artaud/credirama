@@ -1,5 +1,5 @@
 #!/bin/bash
 
-sleep 30
+# sleep 30
 
 node kafka-elastic.js
