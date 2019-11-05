@@ -5,3 +5,5 @@ Status at 08-10-2019 : We have reviewed the stories for the analyst. There are m
 Status at 15-10-2019 We started some pocs, and find some documentation/tutorial for kibana and elasticsearch. FLAG GREEN
 
 Status at 22-10-2019 We need to progress on the integration of our pocs to get our walking skeletton ! FLAG GREEN
+
+Status at 29-10-2019 Elastic search and kibana are integrated with the docker-compose. need to add a connector between kafka and ELK, and begin implementing MVP scenario code. FLAG GREEN

@@ -1,5 +1,6 @@
 package fr.unice.polytech.si5.al.clientService.models;
 
+import com.google.gson.Gson;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -26,4 +27,10 @@ public class BankAccount {
 
     @NotNull
     int amount;
+
+    @Override
+    public String toString() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
 }

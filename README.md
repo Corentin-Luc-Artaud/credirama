@@ -1,11 +1,8 @@
-# CréditRama
+# CréditRama ![](https://img.shields.io/static/v1?label=Status&message=Green&color=brightgreen)
 
 CréditRama est une banque en ligne ou des clients créent un profile avec un compte courant et un/des comptes épargnes.
 
-
 ## Installation
-
-To be completed
 
 ```bash
 To be completed

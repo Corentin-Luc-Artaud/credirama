@@ -1,39 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="info" name="MyApp">
+<Configuration status="INFO">
     <Appenders>
         <Console name="console" target="SYSTEM_OUT">
             <PatternLayout>
                 <Pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n</Pattern>
             </PatternLayout>
         </Console>
-        <File name="MyFile" fileName="logs/app.log">
-            <PatternLayout>
-                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
-            </PatternLayout>
-        </File>
-        <Http name="Splunk" url="http://dzdiscover.com:8088/services/collector/event">
+
+
+        <Http name="ElasticSearchAppender1" url="http://elasticsearch:9200/credirama/_doc">
+            <Property name="Content-Type" value="application/json" />
             <verifyHostname>false</verifyHostname>
-            <Property name="Authorization" value="Splunk AB40AC1E-D53E-4A40-854B-BE03596021DB"/>
             <PatternLayout>
-                <Pattern>
-                    {
-                    "event": "LOGGING",
-                    "fields" : {
-                    "debug_level":"%p",
-                    "debug_timestamp":"%d{ISO8601}",
-                    "debug_thread":"%t",
-                    "debug_file":"%F",
-                    "debug_line":"%L",
-                    "debug_message":"%m"
-                    }}%n
-                </Pattern>
+                <Pattern>{
+                    "@timestamp": "${date:yyyy-MM-dd'T'HH:mm:ss.SSSXXX}",
+                    "class":"%C",
+                    "file":"%F",
+                    "level":"%5p",
+                    "line_number":"%L",
+                    "logger_name":"frontEndAuditLog",
+                    "ipAddress":"%X{ipAddress}",
+                    "requestId":"%X{requestId}",
+                    "sessionId":"%X{sessionId}",
+                    "source_host":"%X{sourceHost}",
+                    "method":"%M",
+                    "thread_name":"%t",
+                    "event": %m
+                    }%n</Pattern>
             </PatternLayout>
-            <ignoreExceptions>false</ignoreExceptions>
+
+
+        </Http>
+
+        <Http name="ElasticSearchAppender2" url="http://elasticsearch:9200/credirama/_doc">
+            <Property name="Content-Type" value="application/json" />
+            <verifyHostname>false</verifyHostname>
+            <JsonLayout objectMessageAsJsonObject="true" complete="true" compact="false" locationInfo="true">
+                <KeyValuePair key="@timestamp" value="$${date:yyyy-MM-dd'T'HH:mm:ss.SSSXXX}"/>
+                <KeyValuePair key="application" value="credirama" />
+            </JsonLayout>
         </Http>
     </Appenders>
+
+
     <Loggers>
-        <Root level="info" additivity="false">
-            <AppenderRef ref="Splunk"/>
+        <Logger name="LOG_TO_ES" level="INFO" additivity="false">
+            <AppenderRef ref="ElasticSearchAppender1" />
+        </Logger>
+        <Root level="info">
+            <AppenderRef ref="console" />
+        </Root>
+        <Root level="debug" additivity="false">
+            <AppenderRef ref="console" />
+        </Root>
+        <Root level="error" additivity="false">
+            <AppenderRef ref="console" />
         </Root>
     </Loggers>
 </Configuration>

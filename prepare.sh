@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # DELETE ALREADY EXISTING IMAGES
 result=$( docker ps -a -q )
 echo "Stopping and deleting containers"
@@ -24,9 +25,17 @@ else
   echo "No such container"
 fi
 
-cd  ./clientService
-echo "Building clientservice:latest image"
+cd  ./models
+echo "Building models"
+mvn clean package install -DskipTests=true
+
+cd ../generator
+echo "Packaging generator"
 mvn clean package -DskipTests=true
+
+cd ../clientService
+echo "Building clientservice:latest image"
+mvn clean package install -DskipTests=true
 docker build -t clientservice:latest .
 
 cd  ../TimeService
@@ -34,7 +43,8 @@ echo "Building timeservice:latest image"
 mvn clean package -DskipTests=true
 docker build -t timeservice:latest .
 
+
 # RUN DOCKER-COMPOSE
 cd ..
 echo "Running Docker compose"
-docker-compose up --build
+docker-compose up --build --force-recreate

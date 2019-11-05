@@ -4,6 +4,9 @@ import com.google.gson.Gson;
 import fr.unice.polytech.si5.al.clientService.kafka.Producer;
 import fr.unice.polytech.si5.al.clientService.models.Client;
 import fr.unice.polytech.si5.al.clientService.repositories.ClientRepository;
+import fr.unice.polytech.si5.al.models.events.CrediramaEvent;
+import fr.unice.polytech.si5.al.models.events.EventName;
+import fr.unice.polytech.si5.al.models.events.EventPhase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.apache.logging.log4j.LogManager;
@@ -29,8 +32,13 @@ public class ClientRegisterer {
         clientRepository.save(newClient);
         logger.info("New bank account has been created for client " + newClient.getFirstName() + " " + newClient.getLastName());
 
+        CrediramaEvent eventMessage = CrediramaEvent.builder()
+                .eventName(EventName.CLIENT_SUBSCRITION)
+                .eventPhase(EventPhase.PRODUCTION)
+                .payload(gson.toJson(newClient))
+                .build();
         try {
-            this.kafkaProducer.sendMessage("client", gson.toJson(newClient));
+            this.kafkaProducer.sendMessage("client", gson.toJson(eventMessage));
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }

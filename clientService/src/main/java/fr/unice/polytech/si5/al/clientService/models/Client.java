@@ -1,5 +1,6 @@
 package fr.unice.polytech.si5.al.clientService.models;
 
+import com.google.gson.Gson;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -43,4 +44,9 @@ public class Client {
         this.creationTime = creationTime;
     }
 
+    @Override
+    public String toString() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
 }
