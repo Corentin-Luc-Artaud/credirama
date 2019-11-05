@@ -13,9 +13,12 @@ public class TimeFactory {
     public static LocalDateTime generateTimeStamp(LocalDate birth) {
 
         long minimum = birth.plusYears(5).toEpochDay();
-        long now = now().toLocalDate().toEpochDay();
+        long maximum = now().minusYears(3).toLocalDate().toEpochDay();
 
-        long randomEpochDay = ThreadLocalRandom.current().longs(minimum, now).findAny().getAsLong();
+        if (maximum < minimum)
+            maximum = now().toLocalDate().toEpochDay();
+
+        long randomEpochDay = ThreadLocalRandom.current().longs(minimum, maximum).findAny().getAsLong();
 
         int hour = randIntBetween(0, 11);
         int minute = randIntBetween(0, 59);

@@ -5,12 +5,15 @@ import fr.unice.polytech.creditrama.clients.enums.LevelOfSchooling;
 import fr.unice.polytech.creditrama.clients.enums.MaritalStatus;
 import fr.unice.polytech.creditrama.clients.enums.Nationality;
 import fr.unice.polytech.creditrama.clients.enums.WorkField;
+import fr.unice.polytech.creditrama.transactions.Transaction;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static fr.unice.polytech.creditrama.Utils.pickFrom;
@@ -27,6 +30,9 @@ import static java.time.LocalDate.ofYearDay;
 public class Client {
 
     private static final Faker faker = new Faker();
+
+    private long clientID;
+    private long accountID;
 
     private String firstName;
     private String lastName;
@@ -57,6 +63,10 @@ public class Client {
         fiscalNumber();
         countryOfResidence();
         location();
+    }
+
+    public List<Transaction> makeTransactions(int number, LocalDateTime accountCreation) throws IllegalAccessException {
+        throw new IllegalAccessException("This method should not be called : only sub classes can do that");
     }
 
     int getAge() {

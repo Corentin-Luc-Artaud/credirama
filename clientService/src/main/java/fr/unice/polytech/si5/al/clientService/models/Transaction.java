@@ -20,14 +20,14 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     long idTransaction;
 
-    long idClient;
+    long clientID;
 
-    long idAccount;
+    long accountID;
 
     /**
      * negative if withdrawal, positive otherwise
      */
-    int difference;
+    int amount;
 
     long timestamp = System.currentTimeMillis();
 }
