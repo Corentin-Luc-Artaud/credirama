@@ -1,6 +1,6 @@
 #! /bin/bash
 
-URL=localhost:8080/clients/
+URL=localhost:8080/dump/
 DIR=./dumps
 
 if [ ! -d $DIR ]; then
