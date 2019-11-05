@@ -20,7 +20,7 @@ public class TransactionService {
     private TransactionRepository transactionRepository;
 
     public void handleTransaction(Transaction transaction) throws TransactionException {
-        System.out.println("bank account length : " + bankAccountRepository.count());
+
         Optional<BankAccount> clientAccount = bankAccountRepository.findById(transaction.getIdAccount());
 
         if (clientAccount.isPresent()){

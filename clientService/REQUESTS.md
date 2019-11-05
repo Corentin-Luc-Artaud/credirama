@@ -16,7 +16,7 @@ Request to add client :
 - request to add transaction :
 ```
 {
-  "isClient": 1,
+  "idClient": 1,
   "idAccount": 1,
   "difference": 100
 }

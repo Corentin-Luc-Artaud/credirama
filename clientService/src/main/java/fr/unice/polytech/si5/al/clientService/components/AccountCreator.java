@@ -22,6 +22,6 @@ public class AccountCreator {
                 .build();
         bankAccountRepository.save(newBankAccount);
         logger.info("New bank account has been created for client " + idClient);
-        return newBankAccount.getClientId();
+        return newBankAccount.getId();
     }
 }

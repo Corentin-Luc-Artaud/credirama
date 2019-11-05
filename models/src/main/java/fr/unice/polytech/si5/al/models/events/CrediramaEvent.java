@@ -8,11 +8,13 @@ public class CrediramaEvent {
     private EventName eventName;
     private EventPhase eventPhase;
     private Object payload;
+    private long timestamp;
 
-    public CrediramaEvent(EventName eventName, EventPhase eventPhase, Object payload) {
+    public CrediramaEvent(EventName eventName, EventPhase eventPhase, Object payload, long timestamp) {
         this.eventName = eventName;
         this.eventPhase = eventPhase;
         this.payload = payload;
+        this.timestamp = timestamp;
     }
 
     @Override
