@@ -66,7 +66,7 @@ public class Client {
     }
 
     public List<Transaction> makeTransactions(int number, LocalDateTime accountCreation) throws IllegalAccessException {
-        throw new IllegalAccessException("This method should not be called : only sub classes can do that");
+        return new ArrayList<>();
     }
 
     int getAge() {
