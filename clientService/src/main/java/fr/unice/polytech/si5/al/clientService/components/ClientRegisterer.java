@@ -39,11 +39,12 @@ public class ClientRegisterer {
         CrediramaEvent eventMessage = CrediramaEvent.builder()
                 .eventName(EventName.CLIENT_SUBSCRITION)
                 .eventPhase(EventPhase.PRODUCTION)
-                .payload(gson.toJson(newClient))
+                .payload(newClient)
                 .timestamp(System.currentTimeMillis())
                 .build();
         try {
-            this.kafkaProducer.sendMessage("client", gson.toJson(eventMessage));
+            String message = gson.toJson(eventMessage);
+            this.kafkaProducer.sendMessage("client", message);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
