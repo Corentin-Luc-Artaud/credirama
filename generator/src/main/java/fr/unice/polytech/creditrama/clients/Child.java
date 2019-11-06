@@ -53,6 +53,8 @@ public class Child extends Client {
             transactions.add(new Transaction(accountID, clientID, amount, time));
         }
 
+        // He add money on his account every Christmas and Birthday, but can't take from the account yet (-18)
+        //
         while (time.isBefore(now())) {
             time = time.plusYears(1).withDayOfYear(birthDay.getDayOfYear() + randIntBetween(1, 10));
             double amount = randIntBetween(5, 15) * 10;

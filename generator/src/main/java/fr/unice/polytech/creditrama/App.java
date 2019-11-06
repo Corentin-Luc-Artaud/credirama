@@ -1,7 +1,6 @@
 package fr.unice.polytech.creditrama;
 
 import com.google.gson.Gson;
-import fr.unice.polytech.creditrama.clients.Child;
 import fr.unice.polytech.creditrama.clients.ClientCreationResponse;
 import fr.unice.polytech.creditrama.transactions.Transaction;
 import org.apache.logging.log4j.LogManager;
@@ -59,17 +58,17 @@ public class App {
             }
 
             try {
+                URL url = new URL(host + "8080/transactions/");
+                List<Transaction> transactions = client.makeTransactions(15, creationTime);
 
-                if (client instanceof Child) {
-                    URL url = new URL(host + "8080/transactions/");
-                    List<Transaction> transactions = client.makeTransactions(15, creationTime);
-
-                    transactions.forEach(transaction -> {
-                        RestTemplate restTemplate = new RestTemplate();
-                        restTemplate.postForObject(url.toString(), transaction, String.class);
-                        logger.info("Created transaction : " + transaction);
-                    });
-                }
+                transactions.stream()
+                        .filter(Transaction::isPast)
+                        .forEach(transaction -> {
+                                    RestTemplate restTemplate = new RestTemplate();
+                                    restTemplate.postForObject(url.toString(), transaction, String.class);
+                                    logger.info("Created transaction : " + transaction);
+                                }
+                        );
             } catch (Exception e) {
                 e.printStackTrace();
             }

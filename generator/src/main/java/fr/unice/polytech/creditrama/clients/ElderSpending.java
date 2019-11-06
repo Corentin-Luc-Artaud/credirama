@@ -2,13 +2,19 @@ package fr.unice.polytech.creditrama.clients;
 
 import fr.unice.polytech.creditrama.clients.enums.LevelOfSchooling;
 import fr.unice.polytech.creditrama.clients.enums.MaritalStatus;
+import fr.unice.polytech.creditrama.transactions.Transaction;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-import static fr.unice.polytech.creditrama.Utils.*;
+import static fr.unice.polytech.creditrama.Utils.pickFrom;
+import static fr.unice.polytech.creditrama.Utils.randIntBetween;
 import static fr.unice.polytech.creditrama.clients.enums.LevelOfSchooling.*;
 import static fr.unice.polytech.creditrama.clients.enums.MaritalStatus.*;
 import static fr.unice.polytech.creditrama.clients.enums.WorkField.RETIRED;
+import static java.time.LocalDateTime.now;
 
 public class ElderSpending extends Client {
 
@@ -52,5 +58,40 @@ public class ElderSpending extends Client {
 
     private void monthlyIncome() {
         setMonthlyIncome(randIntBetween(900, 1400));
+    }
+
+    @Override
+    public List<Transaction> makeTransactions(int number, LocalDateTime accountCreation) {
+        long accountID = getAccountID();
+        long clientID = getClientID();
+
+        List<Transaction> transactions = new ArrayList<>();
+
+        LocalDateTime time = accountCreation;
+
+        double savings = randIntBetween(90, 250) * 1000;
+        double spent = 0;
+
+        // The transfer their savings on our bank
+        transactions.add(new Transaction(accountID, clientID, savings, time));
+
+        // Every month they earn their pension
+        while (time.isBefore(now())) {
+            time = time.plusMonths(1);
+            transactions.add(new Transaction(accountID, clientID, getMonthlyIncome(), time));
+        }
+
+        time = accountCreation;
+
+        // The spend twice more than they earn !
+        while (time.isBefore(now()) && ((savings - 2000) > spent)) {
+            int months = randIntBetween(2, 5);
+            time = time.plusMonths(months);
+
+            double amount = -2 * months * getMonthlyIncome();
+            transactions.add(new Transaction(accountID, clientID, amount, time));
+        }
+
+        return transactions;
     }
 }

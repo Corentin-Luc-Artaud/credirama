@@ -4,6 +4,8 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+import static java.time.LocalDateTime.now;
+
 @Getter
 @Setter
 @With
@@ -15,6 +17,10 @@ public class Transaction {
     long clientID;
     double amount;
     LocalDateTime time;
+
+    public boolean isPast(){
+        return time.isBefore(now());
+    }
 
     @Override
     public String toString() {

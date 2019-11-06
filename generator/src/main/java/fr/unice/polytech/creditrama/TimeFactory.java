@@ -7,13 +7,16 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static fr.unice.polytech.creditrama.Utils.randIntBetween;
 import static java.time.LocalDateTime.now;
+import static org.apache.commons.lang3.math.NumberUtils.max;
 
 public class TimeFactory {
 
     public static LocalDateTime generateTimeStamp(LocalDate birth) {
 
-        long minimum = birth.plusYears(5).toEpochDay();
+        long minimum = now().minusYears(8).toLocalDate().toEpochDay();
         long maximum = now().minusYears(3).toLocalDate().toEpochDay();
+
+        minimum = max(minimum, birth.plusYears(5).toEpochDay());
 
         if (maximum < minimum)
             maximum = now().toLocalDate().toEpochDay();
