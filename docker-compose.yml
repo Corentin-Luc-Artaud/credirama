@@ -112,6 +112,15 @@ services:
     ports:
       - "8081:8081"
 
+  analyst-service:
+    container_name: analystservice
+    build:
+      context: analystservice
+    image: analystservice:latest
+    ports:
+      - "9500:9300"
+
+
 #  streamsets:
 #    image: streamsets/datacollector
 #    ports:
