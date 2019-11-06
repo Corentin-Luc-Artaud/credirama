@@ -117,6 +117,9 @@ services:
     build:
       context: analystservice
     image: analystservice:latest
+    depends_on: 
+      - elasticsearch
+      - kibana
     ports:
       - "9500:9300"
 
@@ -155,9 +158,11 @@ services:
       - kafka-connector
       - client-service
       - time-service
+      - analyst-service
     command: 
       - time-service:8081
       - client-service:8080
+      - analyst-service:9300
 
 
 

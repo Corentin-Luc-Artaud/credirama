@@ -45,11 +45,12 @@ docker build -t timeservice:latest .
 
 cd ../kafkaconnector
 echo "Building kafkaconnector:latest image"
-docker build-t kafkaconnector:latest
+docker build -t kafkaconnector:latest
 
 cd ../analystservice
 echo "Building analystservice:latest image"
-docker build-t analystservice:latest
+mvn clean package -DskipTests=true
+docker build -t analystservice:latest
 
 # RUN DOCKER-COMPOSE
 cd ..
