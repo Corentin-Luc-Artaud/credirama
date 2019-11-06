@@ -25,6 +25,11 @@ else
   echo "No such container"
 fi
 
+
+if [ -d ./dumps ]; then
+  rm -r ./dumps
+fi
+
 cd  ./models
 echo "Building models"
 mvn clean package install -DskipTests=true
@@ -45,12 +50,12 @@ docker build -t timeservice:latest .
 
 cd ../kafkaconnector
 echo "Building kafkaconnector:latest image"
-docker build -t kafkaconnector:latest
+docker build -t kafkaconnector:latest .
 
 cd ../analystservice
 echo "Building analystservice:latest image"
 mvn clean package -DskipTests=true
-docker build -t analystservice:latest
+docker build -t analystservice:latest .
 
 # RUN DOCKER-COMPOSE
 cd ..
