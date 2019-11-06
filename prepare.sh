@@ -9,6 +9,14 @@ else
   echo "No such container"
 fi
 
+result=$( docker images -q analystservice:latest )
+echo "Deleting analystservice:latest image"
+if [[ -n "$result" ]]; then
+  docker rmi analystservice:latest
+else
+  echo "No such container"
+fi
+
 result=$( docker images -q clientservice:latest )
 echo "Deleting clientservice:latest image"
 if [[ -n "$result" ]]; then
@@ -31,7 +39,7 @@ mvn clean package install -DskipTests=true
 
 cd ../generator
 echo "Packaging generator"
-mvn clean package -DskipTests=true
+mvn clean package install -DskipTests=true
 
 cd ../clientService
 echo "Building clientservice:latest image"
@@ -40,7 +48,7 @@ docker build -t clientservice:latest .
 
 cd  ../TimeService
 echo "Building timeservice:latest image"
-mvn clean package -DskipTests=true
+mvn clean package install -DskipTests=true
 docker build -t timeservice:latest .
 
 cd ../kafkaconnector

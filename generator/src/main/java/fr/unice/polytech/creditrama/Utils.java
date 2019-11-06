@@ -28,5 +28,4 @@ public class Utils {
     public static <T> T pickFrom(List<T> list) {
         return list.get(randIntBetween(0, list.size() - 1));
     }
-
 }
