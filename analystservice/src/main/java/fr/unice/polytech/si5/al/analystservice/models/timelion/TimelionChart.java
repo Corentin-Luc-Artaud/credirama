@@ -5,6 +5,10 @@ import com.google.gson.Gson;
 public class TimelionChart {
     public String title;
     public String type;
+    public String visState;
+    public String uiStateJSON;
+    public String description;
+
     TimelionParams params;
 
     public TimelionChart(String title, TimelionParams params) {

@@ -3,6 +3,7 @@ package fr.unice.polytech.si5.al.analystservice.controllers;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import fr.unice.polytech.si5.al.analystservice.Main;
+import fr.unice.polytech.si5.al.analystservice.services.CreateTimelionRequest;
 import org.json.*;
 
 import fr.unice.polytech.si5.al.analystservice.services.Kibana;
