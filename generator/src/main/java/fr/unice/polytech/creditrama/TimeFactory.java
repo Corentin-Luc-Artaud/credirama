@@ -3,6 +3,7 @@ package fr.unice.polytech.creditrama;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static fr.unice.polytech.creditrama.Utils.randIntBetween;
@@ -21,12 +22,20 @@ public class TimeFactory {
         if (maximum < minimum)
             maximum = now().toLocalDate().toEpochDay();
 
+        if (minimum >= maximum)
+            maximum = minimum + 1;
+
         long randomEpochDay = ThreadLocalRandom.current().longs(minimum, maximum).findAny().getAsLong();
 
         int hour = randIntBetween(0, 11);
         int minute = randIntBetween(0, 59);
 
-        return LocalDateTime.of(LocalDate.ofEpochDay(randomEpochDay), LocalTime.of(hour, minute));
+        LocalDateTime time = LocalDateTime.of(LocalDate.ofEpochDay(randomEpochDay), LocalTime.of(hour, minute));
+
+        if (time.getMonth() == Month.JANUARY || time.getMonth() == Month.FEBRUARY)
+            return generateTimeStamp(birth);
+
+        return time;
     }
 
 }
