@@ -18,10 +18,10 @@ class TimeServiceApplicationTests {
         LocalDateTime date = LocalDateTime.now();
         LocalDateTime newDate = date.minusDays(1);
         String res = service.setTime(date.toString());
-        assertEquals(date, service.getTime());
+        assertEquals(date, LocalDateTime.parse(service.getTime().toString()));
         assertEquals("OK", res);
         res = service.setTime(newDate.toString());
-        assertEquals(newDate, service.getTime());
+        assertEquals(newDate, LocalDateTime.parse(service.getTime()));
         assertEquals("OK", res);
     }
 }
