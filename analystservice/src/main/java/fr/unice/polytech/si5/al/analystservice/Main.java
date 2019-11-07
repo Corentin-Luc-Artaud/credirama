@@ -1,6 +1,7 @@
 package fr.unice.polytech.si5.al.analystservice;
 
 import fr.unice.polytech.si5.al.analystservice.controllers.DashboardApi;
+import fr.unice.polytech.si5.al.analystservice.controllers.IndexPatternApi;
 import fr.unice.polytech.si5.al.analystservice.controllers.VisualisationApi;
 
 import static spark.Spark.*;
@@ -33,10 +34,7 @@ public class Main {
             });
 
             path("/index-patterns", () -> {
-                get("/", DashboardApi.dashboardsListRoute);
-                post("/add", DashboardApi.addDashboardRoute);
-                post("/save", DashboardApi.saveDashboardRoute);
-                delete("/remove", DashboardApi.deleteDashboardRoute);
+                post("/add", IndexPatternApi.addIndexPattern);
             });
         });
     }

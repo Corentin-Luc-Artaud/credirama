@@ -1,5 +1,6 @@
 package fr.unice.polytech.si5.al.analystservice.controllers;
 
+import fr.unice.polytech.si5.al.analystservice.Main;
 import fr.unice.polytech.si5.al.analystservice.services.Kibana;
 import fr.unice.polytech.si5.al.analystservice.services.VisualisationServices;
 
@@ -9,14 +10,23 @@ import org.json.JSONObject;
 import spark.Route;
 
 public class IndexPatternApi {
-    private static final Logger logger = LogManager.getLogger(IndexPatternApi.class);
+    private static final Logger logger = LogManager.getLogger(Main.class);
 
     public static Route addIndexPattern = (request, response) -> {
         logger.info("VisualisationApi::addVisualisationRoute called");
+
+        JSONObject element = new JSONObject();
+        System.out.println(request.body());
+        String title = (String) new JSONObject(request.body()).get("title");
+        element.put("title", title);
+        element.put("timeFieldName", "timestamp");
+
+        JSONObject attributes = new JSONObject();
+        attributes.put("attributes", element);
+
         Kibana kibana = new Kibana();
-        VisualisationServices vizServ = new VisualisationServices();
-        JSONObject jsonObject = new JSONObject(request.body());
-        kibana.addVisualisation(vizServ.createTimelion(jsonObject.get("title").toString(), jsonObject.get("expression").toString()), "");
-        return null;
+        System.out.println(attributes);
+        kibana.addIndexPattern(attributes, title);
+        return "ok";
     };
 }

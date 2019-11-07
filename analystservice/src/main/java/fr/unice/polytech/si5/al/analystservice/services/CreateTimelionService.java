@@ -46,7 +46,7 @@ public class CreateTimelionService {
         request.put("attributes", visualizion);
         logger.info(request.toString());
         Kibana kibana = new Kibana();
-        kibana.addVisualisation(request.toString());
+        kibana.addVisualisation(request.toString(), "");
     }
 
 

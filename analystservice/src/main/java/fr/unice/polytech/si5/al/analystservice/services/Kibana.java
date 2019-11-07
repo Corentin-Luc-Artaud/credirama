@@ -10,6 +10,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONObject;
 
 public class Kibana {
     private static final Logger logger = LogManager.getLogger(Kibana.class);
@@ -22,5 +23,18 @@ public class Kibana {
         invocationBuilder.header("kbn-xsrf", "true");
         Response response = invocationBuilder.post(Entity.entity(visualisation, MediaType.APPLICATION_JSON));
         logger.info(response.getEntity().toString());
+    }
+
+    public void addIndexPattern(JSONObject requestBody, String indexName) {
+        logger.info(requestBody);
+        Client client = ClientBuilder.newClient();
+        WebTarget webTarget = client.target("http://kibana:5601/api/saved_objects/index-pattern/creditrama");
+
+        Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+        invocationBuilder.header("kbn-xsrf", "true");
+        Response response = invocationBuilder.post(Entity.entity(requestBody.toString(), MediaType.APPLICATION_JSON));
+        System.out.println(response);
+        logger.info(response.getEntity().toString());
+        logger.info(response.toString());
     }
 }
