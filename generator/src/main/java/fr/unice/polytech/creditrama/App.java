@@ -2,7 +2,6 @@ package fr.unice.polytech.creditrama;
 
 import com.google.gson.Gson;
 import fr.unice.polytech.creditrama.clients.ClientCreationResponse;
-import fr.unice.polytech.creditrama.transactions.Transaction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +10,6 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static fr.unice.polytech.creditrama.ClientFactory.createBatch;
 
@@ -25,7 +23,9 @@ public class App {
     public static void main(String[] args) throws IOException {
         String host = args.length != 0 ? args[0] : "http://localhost:";
 
-        createBatch(5).forEach(client -> {
+        long start = System.currentTimeMillis();
+
+        createBatch(1000).forEach(client -> {
 
             LocalDateTime creationTime = TimeFactory.generateTimeStamp(client.getDateOfBirth());
             ClientCreationResponse response;
@@ -57,7 +57,7 @@ public class App {
                 e.printStackTrace();
             }
 
-            try {
+            /*try {
                 URL url = new URL(host + "8080/transactions/");
                 List<Transaction> transactions = client.makeTransactions(15, creationTime);
 
@@ -71,7 +71,9 @@ public class App {
                         );
             } catch (Exception e) {
                 e.printStackTrace();
-            }
+            }*/
         });
+
+        System.out.println(">>>>>>> "+(System.currentTimeMillis() - start));
     }
 }
