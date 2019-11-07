@@ -14,9 +14,10 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.PostConstruct;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @Component
@@ -31,7 +32,7 @@ public class ClientRegisterer {
 
     private Gson gson;
 
-    public long addNewClient(Client newClient){
+    public long addNewClient(Client newClient) {
         logger.info("New client has been registered");
         clientRepository.save(newClient);
         logger.info("New bank account has been created for client " + newClient.getFirstName() + " " + newClient.getLastName());
@@ -40,7 +41,7 @@ public class ClientRegisterer {
                 .eventName(EventName.CLIENT_SUBSCRITION)
                 .eventPhase(EventPhase.PRODUCTION)
                 .payload(newClient)
-                .timestamp(System.currentTimeMillis())
+                .timestamp(setRandomTime())
                 .build();
         try {
             String message = gson.toJson(eventMessage);
@@ -59,8 +60,22 @@ public class ClientRegisterer {
         return res;
     }
 
+    private String setRandomTime() {
+
+        long offset = Timestamp.valueOf("2019-01-01 00:00:00").getTime();
+        long end = Timestamp.valueOf("2019-11-01 00:00:00").getTime();
+        long diff = end - offset + 1;
+        Timestamp rand = new Timestamp(offset + (long)(Math.random() * diff));
+
+        // Conversion
+        SimpleDateFormat sdf;
+        sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        String date_iso = sdf.format(rand);
+        return date_iso;
+    }
+
     @PostConstruct
-    public void onInit(){
+    public void onInit() {
         String kafkaBrokerAddress = "kafka:9093";
         this.kafkaProducer = new Producer(kafkaBrokerAddress);
         this.gson = new Gson();
