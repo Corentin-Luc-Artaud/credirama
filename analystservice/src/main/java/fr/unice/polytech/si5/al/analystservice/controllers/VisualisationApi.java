@@ -3,6 +3,7 @@ package fr.unice.polytech.si5.al.analystservice.controllers;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import fr.unice.polytech.si5.al.analystservice.Main;
+import fr.unice.polytech.si5.al.analystservice.services.CreateTimelionRequest;
 import org.json.*;
 
 import fr.unice.polytech.si5.al.analystservice.services.Kibana;
@@ -20,7 +21,7 @@ public class VisualisationApi {
             Kibana kibana = new Kibana();
             VisualisationServices vizServ = new VisualisationServices();
             JSONObject jsonObject = new JSONObject(request.body());
-            kibana.addVisualisation(vizServ.createTimelion(jsonObject.get("title").toString(), jsonObject.get("expression").toString()));
+            kibana.addVisualisation((jsonObject.get("title").toString(), jsonObject.get("expression").toString()));
         return null;
     };
 
