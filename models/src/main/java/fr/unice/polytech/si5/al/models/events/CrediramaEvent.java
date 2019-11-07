@@ -8,9 +8,9 @@ public class CrediramaEvent {
     private EventName eventName;
     private EventPhase eventPhase;
     private Object payload;
-    private long timestamp;
+    private String timestamp;
 
-    public CrediramaEvent(EventName eventName, EventPhase eventPhase, Object payload, long timestamp) {
+    public CrediramaEvent(EventName eventName, EventPhase eventPhase, Object payload, String timestamp) {
         this.eventName = eventName;
         this.eventPhase = eventPhase;
         this.payload = payload;
