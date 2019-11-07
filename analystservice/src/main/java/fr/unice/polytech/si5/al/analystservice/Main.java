@@ -31,6 +31,13 @@ public class Main {
                 post("/save", DashboardApi.saveDashboardRoute);
                 delete("/remove", DashboardApi.deleteDashboardRoute);
             });
+
+            path("/index-patterns", () -> {
+                get("/", DashboardApi.dashboardsListRoute);
+                post("/add", DashboardApi.addDashboardRoute);
+                post("/save", DashboardApi.saveDashboardRoute);
+                delete("/remove", DashboardApi.deleteDashboardRoute);
+            });
         });
     }
 
