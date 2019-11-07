@@ -3,8 +3,8 @@ package fr.unice.polytech.si5.al.analystservice.models.timelion;
 import com.google.gson.Gson;
 
 public class TimelionChart {
-    String title;
-    String type;
+    public String title;
+    public String type;
     TimelionParams params;
 
     public TimelionChart(String title, TimelionParams params) {

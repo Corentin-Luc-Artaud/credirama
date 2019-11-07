@@ -4,13 +4,9 @@ import com.google.gson.Gson;
 import fr.unice.polytech.si5.al.analystservice.models.timelion.TimelionChart;
 
 public class Visualisation {
-    String id;
-    String type;
     TimelionChart attributes;
 
-    public Visualisation(String id, TimelionChart timelionChart) throws Exception {
-        this.id = id;
-        this.type = "visualization";
+    public Visualisation(TimelionChart timelionChart) throws Exception {
         this.attributes = timelionChart;
     }
 

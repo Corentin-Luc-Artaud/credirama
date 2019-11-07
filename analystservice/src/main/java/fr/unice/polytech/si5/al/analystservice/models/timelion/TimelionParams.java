@@ -3,8 +3,8 @@ package fr.unice.polytech.si5.al.analystservice.models.timelion;
 import com.google.gson.Gson;
 
 public class TimelionParams {
-    String expression;
-    String interval;
+    public String expression;
+    public String interval;
 
     public TimelionParams(String expression) {
         this.expression = expression;

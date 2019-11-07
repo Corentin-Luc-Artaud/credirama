@@ -12,10 +12,10 @@ public class VisualisationServices {
     private static final Logger logger = LogManager.getLogger(VisualisationServices.class);
 
 
-    public String createTimelion(String id, String index, String title, String expression) throws Exception {
+    public String createTimelion(String title, String expression) throws Exception {
         TimelionParams timelionParams = new TimelionParams(expression);
         TimelionChart timelionChart = new TimelionChart(title, timelionParams);
-        Visualisation visualisation = new Visualisation(id, timelionChart);
+        Visualisation visualisation = new Visualisation(timelionChart);
         logger.info(visualisation.toString());
         return visualisation.toString();
     }

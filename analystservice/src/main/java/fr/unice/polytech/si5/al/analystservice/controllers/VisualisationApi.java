@@ -1,6 +1,10 @@
 package fr.unice.polytech.si5.al.analystservice.controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import fr.unice.polytech.si5.al.analystservice.Main;
+import org.json.*;
+
 import fr.unice.polytech.si5.al.analystservice.services.Kibana;
 import fr.unice.polytech.si5.al.analystservice.services.VisualisationServices;
 
@@ -15,8 +19,8 @@ public class VisualisationApi {
         logger.info("VisualisationApi::addVisualisationRoute called");
             Kibana kibana = new Kibana();
             VisualisationServices vizServ = new VisualisationServices();
-            request.params("title");
-            kibana.addVisualisation(vizServ.createTimelion(request.params("id"), request.params("index"), request.params("title"), request.params("expression")));
+            JSONObject jsonObject = new JSONObject(request.body());
+            kibana.addVisualisation(vizServ.createTimelion(jsonObject.get("title").toString(), jsonObject.get("expression").toString()));
         return null;
     };
 
