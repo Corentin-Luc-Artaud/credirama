@@ -14,9 +14,9 @@ import org.apache.logging.log4j.Logger;
 public class Kibana {
     private static final Logger logger = LogManager.getLogger(Kibana.class);
 
-    public void addVisualisation(String visualisation) {
+    public void addVisualisation(String visualisation, String type) {
         Client client = ClientBuilder.newClient();
-        WebTarget webTarget = client.target("http://kibana:5601/api/saved_objects/visualization");
+        WebTarget webTarget = client.target("http://kibana:5601/api/saved_objects/visualization"+type);
 
         Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
         invocationBuilder.header("kbn-xsrf", "true");
