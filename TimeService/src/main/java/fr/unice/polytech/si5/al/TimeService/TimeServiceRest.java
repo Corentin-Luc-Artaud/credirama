@@ -21,8 +21,8 @@ public class TimeServiceRest {
     }
 
     @GetMapping(value = "/")
-    public LocalDateTime getTime() {
+    public String getTime() {
         System.out.println("Accessed GET - " + curTime);
-        return curTime;
+        return curTime.toString();
     }
 }

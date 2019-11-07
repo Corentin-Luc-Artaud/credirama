@@ -45,9 +45,10 @@ public class ClientRegisterer {
         logger.info("New bank account has been created for client " + newClient.getFirstName() + " " + newClient.getLastName());
 
         LocalDateTime currentTime = timeService.getCurrentTime();
-        long currentLongTime = currentTime.toLocalDate().toEpochDay();
-        String isoTime = simpleDate.format(new Timestamp(currentLongTime));
 
+        String isoTime = simpleDate.format(Timestamp.valueOf(currentTime));
+        System.out.println(currentTime);
+        System.out.println(isoTime);
         CrediramaEvent eventMessage = CrediramaEvent.builder()
                 .eventName(EventName.CLIENT_SUBSCRITION)
                 .eventPhase(EventPhase.PRODUCTION)
