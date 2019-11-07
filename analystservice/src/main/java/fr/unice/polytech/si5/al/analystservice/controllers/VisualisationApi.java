@@ -2,10 +2,9 @@ package fr.unice.polytech.si5.al.analystservice.controllers;
 
 import fr.unice.polytech.si5.al.analystservice.Main;
 import fr.unice.polytech.si5.al.analystservice.services.CreateTimelionService;
-import org.json.*;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONObject;
 import spark.Route;
 
 public class VisualisationApi {
