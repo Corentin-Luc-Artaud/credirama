@@ -1,6 +1,9 @@
 package fr.unice.polytech.si5.al.analystservice.controllers;
 
 import fr.unice.polytech.si5.al.analystservice.Main;
+import fr.unice.polytech.si5.al.analystservice.services.Kibana;
+import fr.unice.polytech.si5.al.analystservice.services.VisualisationServices;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import spark.Route;
@@ -10,6 +13,10 @@ public class VisualisationApi {
 
     public static Route addVisualisationRoute = (request, response) -> {
         logger.info("VisualisationApi::addVisualisationRoute called");
+            Kibana kibana = new Kibana();
+            VisualisationServices vizServ = new VisualisationServices();
+            request.params("title");
+            kibana.addVisualisation(vizServ.createTimelion(request.params("id"), request.params("index"), request.params("title"), request.params("expression")));
         return null;
     };
 
