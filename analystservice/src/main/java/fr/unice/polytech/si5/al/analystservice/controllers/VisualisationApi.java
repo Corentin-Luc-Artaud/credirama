@@ -17,11 +17,11 @@ public class VisualisationApi {
 
     public static Route addVisualisationRoute = (request, response) -> {
         logger.info("VisualisationApi::addVisualisationRoute called");
-            Kibana kibana = new Kibana();
-            VisualisationServices vizServ = new VisualisationServices();
-            JSONObject jsonObject = new JSONObject(request.body());
-            kibana.addVisualisation(vizServ.createTimelion(jsonObject.get("title").toString(), jsonObject.get("expression").toString()));
-        return null;
+        Kibana kibana = new Kibana();
+        VisualisationServices vizServ = new VisualisationServices();
+        JSONObject jsonObject = new JSONObject(request.body());
+        kibana.addVisualisation(vizServ.createTimelion(jsonObject.get("title").toString(), jsonObject.get("expression").toString()));
+        return "ok";
     };
 
     public static Route saveVisualisationRoute = (request, response) -> {
