@@ -2,18 +2,6 @@
 
 CréditRama est une banque en ligne ou des clients créent un profile avec un compte courant et un/des comptes épargnes.
 
-## Installation
-
-```bash
-To be completed
-```
-
-## Usage
-
-```python
-To be completed
-```
-
 ## Authors
 - Corentin ARTAUD
 - Alexandre BOLOT
