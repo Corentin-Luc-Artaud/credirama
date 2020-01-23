@@ -23,8 +23,7 @@ public class TransactionController {
     }
 
     @PostMapping(value = "/")
-    public ResponseEntity fillAccount(@Valid @RequestBody Transaction transaction){
-
+    public ResponseEntity fillAccount(@Valid @RequestBody Transaction transaction) {
         try {
             transactionService.handleTransaction(transaction);
         } catch (TransactionException e) {

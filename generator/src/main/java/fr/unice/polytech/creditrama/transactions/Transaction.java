@@ -1,5 +1,6 @@
 package fr.unice.polytech.creditrama.transactions;
 
+import fr.unice.polytech.creditrama.clients.Client;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,12 @@ public class Transaction {
     long clientID;
     double amount;
     LocalDateTime time;
+
+    public Transaction withClient(Client client){
+        this.accountID = client.getAccountID();
+        this.clientID = client.getClientID();
+        return this;
+    }
 
     public boolean isPast(){
         return time.isBefore(now());

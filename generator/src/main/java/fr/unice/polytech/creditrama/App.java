@@ -25,7 +25,7 @@ public class App {
 
         long start = System.currentTimeMillis();
 
-        createBatch(1000).forEach(client -> {
+        createBatch(2).forEach(client -> {
 
             LocalDateTime creationTime = TimeFactory.generateTimeStamp(client.getDateOfBirth());
             ClientCreationResponse response;

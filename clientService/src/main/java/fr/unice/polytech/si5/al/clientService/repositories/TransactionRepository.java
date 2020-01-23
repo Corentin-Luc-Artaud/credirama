@@ -10,5 +10,7 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
     @Override
     Iterable<Transaction> findAll();
 
-    Optional<Transaction> findById(long id);
+    Optional<Transaction> findFirstByAccountIDOrderByTimestampDesc(long id);
+
+    Iterable<Transaction> findAllByAccountID(long id);
 }
