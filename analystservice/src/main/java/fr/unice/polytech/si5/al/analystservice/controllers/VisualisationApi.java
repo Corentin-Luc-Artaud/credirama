@@ -1,7 +1,7 @@
 package fr.unice.polytech.si5.al.analystservice.controllers;
 
 import fr.unice.polytech.si5.al.analystservice.Main;
-import fr.unice.polytech.si5.al.analystservice.services.CreateTimelionService;
+import fr.unice.polytech.si5.al.analystservice.services.CreateVisualizationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
@@ -17,15 +17,24 @@ public class VisualisationApi {
         JSONObject body = new JSONObject(request.body());
 
         // call create timelion service
-        CreateTimelionService createTimelionService = new CreateTimelionService();
-        createTimelionService.createTimelion(body.get("title").toString(), body.get("expression").toString());
+        CreateVisualizationService createVisualizationService = new CreateVisualizationService();
+        createVisualizationService.createTimelion(body.get("title").toString(), body.get("expression").toString());
 
         return "ok";
     };
 
-    public static Route saveVisualisationRoute = (request, response) -> {
-        logger.info("VisualisationApi::saveVisualisationRoute called");
-        return null;
+    public static Route addHistogramRoute = (request, response) -> {
+        logger.info("VisualisationApi::addHistogram called");
+
+        // get body
+        JSONObject body = new JSONObject(request.body());
+
+        // call create timelion service
+        CreateVisualizationService createVisualizationService = new CreateVisualizationService();
+        createVisualizationService.createHistogram(body.get("title").toString(), body.get("variable").toString(), body.get("indexPatternId").toString());
+
+
+        return "ok";
     };
 
     public static Route deleteVisualisationRoute = (request, response) -> {

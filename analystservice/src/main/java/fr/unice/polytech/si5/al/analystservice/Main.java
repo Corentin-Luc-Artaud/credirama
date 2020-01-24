@@ -22,7 +22,7 @@ public class Main {
             path("/visualisations", () -> {
                 get("/", VisualisationApi.visualisationsListRoute);
                 post("/add", VisualisationApi.addVisualisationRoute);
-                post("/save", VisualisationApi.saveVisualisationRoute);
+                post("/addhistogram", VisualisationApi.addHistogramRoute);
                 delete("/remove", VisualisationApi.deleteVisualisationRoute);
             });
 
