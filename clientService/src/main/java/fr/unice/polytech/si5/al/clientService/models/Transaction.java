@@ -30,11 +30,18 @@ public class Transaction {
     /**
      * negative if withdrawal, positive otherwise
      */
-    int amount;
+    double amount;
 
-    long timestamp = System.currentTimeMillis();
+    long transactionTime = System.currentTimeMillis();
+
+    public Transaction(long accountID, long clientID, double amount, LocalDateTime time) {
+        this.accountID = accountID;
+        this.clientID = clientID;
+        this.amount = amount;
+        this.transactionTime = time.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    }
 
     public LocalDateTime localDateTime() {
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(transactionTime), ZoneId.systemDefault());
     }
 }

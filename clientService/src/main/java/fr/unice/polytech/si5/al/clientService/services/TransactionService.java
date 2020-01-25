@@ -33,14 +33,17 @@ public class TransactionService {
 
             if (account.getClientId() == transaction.getClientID()) {
 
-                checkPreviousTransaction(account, transaction);
                 checkTimeSynchro(transaction);
+                checkPreviousTransaction(account, transaction);
 
-                int currentAmount = account.getAmount();
-                account.setAmount(currentAmount + transaction.getAmount());
+                account.setAmount(account.getAmount() + transaction.getAmount());
 
                 bankAccountRepository.save(account);
-                transactionRepository.save(transaction);
+                Transaction saved = transactionRepository.save(transaction);
+
+                System.out.println(saved.localDateTime().toString());
+                System.out.println("----------------");
+
             } else {
                 throw new TransactionException("no account has been found given " +
                         "the accountId and the clientId "
@@ -55,12 +58,10 @@ public class TransactionService {
     }
 
     private void checkPreviousTransaction(BankAccount account, Transaction current) throws TransactionException {
-        Optional<Transaction> optPrevious = transactionRepository.findFirstByAccountIDOrderByTimestampDesc(account.getId());
+        Optional<Transaction> optPrevious = transactionRepository.findFirstByAccountIDOrderByTransactionTimeDesc(account.getId());
 
-        System.err.println("----------------");
-        Iterable<Transaction> transactions = transactionRepository.findAllByAccountID(account.getId());
-        transactions.forEach(t -> System.err.println(t.getIdTransaction() + " - " + t.getTimestamp()));
-        System.err.println("----------------");
+        System.out.println("----------------");
+        System.out.println(current.localDateTime().toString());
 
         if (!optPrevious.isPresent()) {
             return;
@@ -74,7 +75,7 @@ public class TransactionService {
         long timeSpan = ChronoUnit.MILLIS.between(prevTime, currentTime);
 
         if (timeSpan < 1000) {
-            System.err.println(timeSpan + " between " + prevTime.toString() + " and " + currentTime.toString());
+            System.out.println(timeSpan + " between " + prevTime.toString() + " and " + currentTime.toString());
             throw new TransactionException("new transaction too fast on same account");
         }
     }
@@ -83,6 +84,7 @@ public class TransactionService {
         long timeSpan = ChronoUnit.SECONDS.between(transaction.localDateTime(), timeService.getCurrentTime());
 
         if (Math.abs(timeSpan) > 3) {
+            System.out.println(timeSpan + " too big");
             throw new TransactionException("this transaction has a timestamp too different compared to our system !");
         }
     }
