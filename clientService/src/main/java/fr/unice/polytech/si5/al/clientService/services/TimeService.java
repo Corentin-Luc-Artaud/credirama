@@ -1,7 +1,5 @@
 package fr.unice.polytech.si5.al.clientService.services;
 
-import fr.unice.polytech.si5.al.clientService.kafka.Producer;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -9,10 +7,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import java.net.URL;
 import java.time.LocalDateTime;
-
-import javax.annotation.PostConstruct;
 
 @Service
 @EnableConfigurationProperties
@@ -39,8 +36,6 @@ public class TimeService {
             return LocalDateTime.now();
         }
     }
-
-    
 
     /**
      * @param url the url to set

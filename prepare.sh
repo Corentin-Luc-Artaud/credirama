@@ -70,3 +70,5 @@ cd ..
 echo "Running Docker compose"
 #docker-compose build --force-recreate
 docker-compose up launch-barebone && docker-compose up launch-services
+
+tput bel

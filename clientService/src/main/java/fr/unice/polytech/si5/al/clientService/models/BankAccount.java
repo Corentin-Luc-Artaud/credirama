@@ -26,7 +26,7 @@ public class BankAccount {
     long clientId;
 
     @NotNull
-    int amount;
+    double amount;
 
     @Override
     public String toString() {
