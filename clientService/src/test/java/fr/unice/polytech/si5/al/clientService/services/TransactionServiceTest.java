@@ -41,6 +41,7 @@ public class TransactionServiceTest {
     private Transaction third;
     private Transaction fourth;
     private Transaction fifth;
+    private Transaction sixth;
 
     private BankAccount bankAccount = new BankAccount();
 
@@ -72,6 +73,7 @@ public class TransactionServiceTest {
         third = new Transaction(accountId, clientId, 200, start.plus(1300, ChronoUnit.MILLIS));
         fourth = new Transaction(accountId, clientId, 200, start.plusMinutes(1));
         fifth = new Transaction(accountId, clientId, 200, start.minusMinutes(1));
+        sixth = new Transaction(accountId, clientId, 200, start);
     }
 
     private void setupMocks() {
@@ -89,12 +91,16 @@ public class TransactionServiceTest {
                     if (transactions.isEmpty()) {
                         return Optional.empty();
                     } else {
-                        int index= transactions.size()-1;
+                        int index = transactions.size() - 1;
                         return Optional.of(transactions.get(index));
                     }
                 });
 
         when(timeService.getCurrentTime()).thenReturn(LocalDateTime.now());
+    }
+
+    private void mockTimeServiceToFail() {
+        when(timeService.getCurrentTime()).thenReturn(LocalDateTime.now().minusMinutes(4));
     }
 
     @Test
@@ -115,7 +121,10 @@ public class TransactionServiceTest {
         } catch (TransactionException te) {
             assertEquals("new transaction too fast on same account", te.getMessage());
         }
+    }
 
+    @Test
+    public void transactionTooEarly() {
         try {
             // This transaction has a bad timestamp : different by -1 min
             // It should fail because too de-synchronized with our service
@@ -124,11 +133,27 @@ public class TransactionServiceTest {
         } catch (TransactionException te) {
             assertEquals("this transaction has a timestamp too different compared to our system !", te.getMessage());
         }
+    }
 
+    @Test
+    public void transactionTooLate() {
         try {
             // This transaction has a bad timestamp : different by +1 min
             // It should fail because too de-synchronized with our service
             service.handleTransaction(fifth);
+            fail();
+        } catch (TransactionException te) {
+            assertEquals("this transaction has a timestamp too different compared to our system !", te.getMessage());
+        }
+    }
+
+    @Test
+    public void transactionWithTimeServiceFail() {
+        mockTimeServiceToFail();
+
+        try {
+            // It should fail because too de-synchronized with our service
+            service.handleTransaction(sixth);
             fail();
         } catch (TransactionException te) {
             assertEquals("this transaction has a timestamp too different compared to our system !", te.getMessage());

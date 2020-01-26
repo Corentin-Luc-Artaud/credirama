@@ -39,11 +39,7 @@ public class TransactionService {
                 account.setAmount(account.getAmount() + transaction.getAmount());
 
                 bankAccountRepository.save(account);
-                Transaction saved = transactionRepository.save(transaction);
-
-                System.out.println(saved.localDateTime().toString());
-                System.out.println("----------------");
-
+                transactionRepository.save(transaction);
             } else {
                 throw new TransactionException("no account has been found given " +
                         "the accountId and the clientId "
@@ -60,9 +56,6 @@ public class TransactionService {
     private void checkPreviousTransaction(BankAccount account, Transaction current) throws TransactionException {
         Optional<Transaction> optPrevious = transactionRepository.findFirstByAccountIDOrderByTransactionTimeDesc(account.getId());
 
-        System.out.println("----------------");
-        System.out.println(current.localDateTime().toString());
-
         if (!optPrevious.isPresent()) {
             return;
         }
@@ -75,16 +68,14 @@ public class TransactionService {
         long timeSpan = ChronoUnit.MILLIS.between(prevTime, currentTime);
 
         if (timeSpan < 1000) {
-            System.out.println(timeSpan + " between " + prevTime.toString() + " and " + currentTime.toString());
             throw new TransactionException("new transaction too fast on same account");
         }
     }
 
     private void checkTimeSynchro(Transaction transaction) throws TransactionException {
-        long timeSpan = ChronoUnit.SECONDS.between(transaction.localDateTime(), timeService.getCurrentTime());
+        long timeSpan = ChronoUnit.MILLIS.between(transaction.localDateTime(), timeService.getCurrentTime());
 
-        if (Math.abs(timeSpan) > 3) {
-            System.out.println(timeSpan + " too big");
+        if (Math.abs(timeSpan) > 3000) {
             throw new TransactionException("this transaction has a timestamp too different compared to our system !");
         }
     }
