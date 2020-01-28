@@ -33,3 +33,7 @@ A more detailed explaination of these solutions is available [here](https://gith
 What's next : we need to create new tasks and user stories to organize and split the work. FLAG GREEN
 
 ---
+
+Status at 28-01-2019
+We working on implementing/testing potential solutions. We've made some tests also for the new implementations.
+FLAG GREEN
