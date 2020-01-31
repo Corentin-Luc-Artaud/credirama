@@ -3,8 +3,6 @@ package fr.unice.polytech.si5.al.TimeService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.logging.Logger;
 
 @RestController
@@ -42,12 +40,13 @@ public class TimeServiceRest {
 
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "/getFail")
     public long getTimeWithFail() {
         tryFail();
         return getTime();
     }
 
+    @GetMapping(value = "/")
     public long getTime() {
         //System.out.println("Accessed GET - " + curTime);
         return curTimeMillis;
