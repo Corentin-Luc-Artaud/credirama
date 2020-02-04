@@ -42,5 +42,5 @@ FLAG GREEN
 
 Status at 04-02-2020
 - For database failover, we have implemented the database replication with mysql and hproxy. We will work now on replicating using a CDC, kafka and another database to compare both
-- For the timezone managment, we pass all the dates with UTC format and we add a configurable local format
+- For the timezone managment, we pass all the dates with UTC format and we add a configurable local format  
 FLAG GREEN
