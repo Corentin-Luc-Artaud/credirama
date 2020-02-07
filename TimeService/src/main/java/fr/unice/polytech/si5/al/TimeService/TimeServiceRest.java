@@ -37,7 +37,8 @@ public class TimeServiceRest {
 
     @PostMapping("/recover")
     public void Recover() {
-
+        this.curTimeMillis = System.currentTimeMillis();
+        failValue = Math.random()*100;
     }
 
     @GetMapping(value = "/getFail")

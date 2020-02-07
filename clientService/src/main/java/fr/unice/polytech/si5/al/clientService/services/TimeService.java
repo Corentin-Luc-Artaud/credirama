@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
 
@@ -20,20 +21,31 @@ public class TimeService {
 
     @PostConstruct
     public void onInit() {
-      System.out.println("url: "+url);
+        System.out.println("url: " + url);
     }
 
     public LocalDateTime getCurrentTime() {
-        if (this.url == null ) {
+        if (this.url == null) {
             return LocalDateTime.now();
         }
+
         try {
-            java.net.URL url = new URL(this.url);
+            URL url = new URL(this.url);
             RestTemplate restTemplate = new RestTemplate();
             return LocalDateTime.parse(restTemplate.getForEntity(url.toString(), String.class).getBody());
         } catch (Exception e) {
-            System.err.println(e);
+            mLogger.error(e.getMessage());
             return LocalDateTime.now();
+        }
+    }
+
+    public void recoverAtomicTime() {
+        try {
+            URL url = new URL(this.url + "recover");
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.postForEntity(url.toString(), null, Void.class);
+        } catch (MalformedURLException e) {
+            mLogger.error(e.getMessage());
         }
     }
 
@@ -43,4 +55,5 @@ public class TimeService {
     public void setUrl(String url) {
         this.url = url;
     }
+
 }

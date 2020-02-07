@@ -4,6 +4,7 @@ import fr.unice.polytech.si5.al.clientService.exceptions.TransactionException;
 import fr.unice.polytech.si5.al.clientService.models.BankAccount;
 import fr.unice.polytech.si5.al.clientService.models.Transaction;
 import fr.unice.polytech.si5.al.clientService.repositories.BankAccountRepository;
+import fr.unice.polytech.si5.al.clientService.repositories.FailRepository;
 import fr.unice.polytech.si5.al.clientService.repositories.TransactionRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +22,9 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -33,6 +36,8 @@ public class TransactionServiceTest {
     private BankAccountRepository bankAccountRepo;
     @MockBean
     private TransactionRepository transactionRepo;
+    @MockBean
+    private FailRepository failRepository;
 
     private TimeService timeService;
 
@@ -46,17 +51,19 @@ public class TransactionServiceTest {
     private BankAccount bankAccount = new BankAccount();
 
     List<Transaction> transactions = new ArrayList<>();
+    List<Transaction> failedTransactions = new ArrayList<>();
 
     @Before
     public void setUp() {
-        bankAccountRepo = Mockito.mock(BankAccountRepository.class);
-        transactionRepo = Mockito.mock(TransactionRepository.class);
-        timeService = Mockito.mock(TimeService.class);
+        bankAccountRepo = mock(BankAccountRepository.class);
+        transactionRepo = mock(TransactionRepository.class);
+        failRepository = mock(FailRepository.class);
+        timeService = mock(TimeService.class);
 
         setupObjectsInstances();
         setupMocks();
 
-        service = new TransactionService(bankAccountRepo, transactionRepo, timeService);
+        service = new TransactionService(bankAccountRepo, transactionRepo, timeService, failRepository);
     }
 
     private void setupObjectsInstances() {
@@ -97,10 +104,31 @@ public class TransactionServiceTest {
                 });
 
         when(timeService.getCurrentTime()).thenReturn(LocalDateTime.now());
+
+        when(failRepository.saveAll(anyList())).then(methodCall -> {
+            failedTransactions.addAll(methodCall.getArgument(0));
+            return failedTransactions;
+        });
+
+        when(failRepository.count()).then(__ -> (long) failedTransactions.size());
+
+        Mockito.doAnswer(__ -> {
+            failedTransactions.clear();
+            return null;
+        }).when(failRepository).deleteAll();
+
+        Mockito.doAnswer(__ -> {
+            recoverTimeService();
+            return null;
+        }).when(timeService).recoverAtomicTime();
     }
 
     private void mockTimeServiceToFail() {
         when(timeService.getCurrentTime()).thenReturn(LocalDateTime.now().minusMinutes(4));
+    }
+
+    private void recoverTimeService() {
+        when(timeService.getCurrentTime()).thenReturn(LocalDateTime.now());
     }
 
     @Test
@@ -158,5 +186,28 @@ public class TransactionServiceTest {
         } catch (TransactionException te) {
             assertEquals("this transaction has a timestamp too different compared to our system !", te.getMessage());
         }
+    }
+
+    @Test
+    public void triggeringRecovery() throws TransactionException {
+        failRepository.saveAll(Arrays.asList(first, second, third, fourth, fifth));
+
+        assertEquals(5, failRepository.count());
+
+        mockTimeServiceToFail();
+
+        // It should fail because too de-synchronized with our service
+        // This will trigger the time-service recovery
+        try {
+            service.handleTransaction(sixth);
+        } catch (TransactionException ignored) {
+        }
+
+        assertEquals(0, failRepository.count());
+
+        service.handleTransaction(sixth);
+
+        assertEquals(timeService.getCurrentTime().withNano(0), LocalDateTime.now().withNano(0));
+        assertEquals(0, failRepository.count());
     }
 }

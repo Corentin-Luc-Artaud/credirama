@@ -4,6 +4,7 @@ import fr.unice.polytech.si5.al.clientService.exceptions.TransactionException;
 import fr.unice.polytech.si5.al.clientService.models.BankAccount;
 import fr.unice.polytech.si5.al.clientService.models.Transaction;
 import fr.unice.polytech.si5.al.clientService.repositories.BankAccountRepository;
+import fr.unice.polytech.si5.al.clientService.repositories.FailRepository;
 import fr.unice.polytech.si5.al.clientService.repositories.TransactionRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +18,13 @@ public class TransactionService {
     private final BankAccountRepository bankAccountRepository;
     private final TransactionRepository transactionRepository;
     private final TimeService timeService;
+    private final FailRepository failRepository;
 
-    public TransactionService(BankAccountRepository bankAccountRepository, TransactionRepository transactionRepository, TimeService timeService) {
+    public TransactionService(BankAccountRepository bankAccountRepository, TransactionRepository transactionRepository, TimeService timeService, FailRepository failRepository) {
         this.bankAccountRepository = bankAccountRepository;
         this.transactionRepository = transactionRepository;
         this.timeService = timeService;
+        this.failRepository = failRepository;
     }
 
     public void handleTransaction(Transaction transaction) throws TransactionException {
@@ -76,7 +79,18 @@ public class TransactionService {
         long timeSpan = ChronoUnit.MILLIS.between(transaction.localDateTime(), timeService.getCurrentTime());
 
         if (Math.abs(timeSpan) > 3000) {
+            failRepository.save(transaction);
+            introspection();
             throw new TransactionException("this transaction has a timestamp too different compared to our system !");
+        }
+    }
+
+    private void introspection() {
+        long count = failRepository.count();
+
+        if (count > 3) {
+            failRepository.deleteAll();
+            timeService.recoverAtomicTime();
         }
     }
 }
