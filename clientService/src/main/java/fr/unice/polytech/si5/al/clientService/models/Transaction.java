@@ -32,13 +32,18 @@ public class Transaction {
      */
     double amount;
 
-    long transactionTime = System.currentTimeMillis();
+    long transactionTime; //TODO UTC from time service
+    LocalDateTime transactionLocalTime; 
+    
 
-    public Transaction(long accountID, long clientID, double amount, LocalDateTime time) {
+    public Transaction(long accountID, long clientID, double amount, long creationTime, String zone) {
         this.accountID = accountID;
         this.clientID = clientID;
         this.amount = amount;
-        this.transactionTime = time.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        this.transactionTime = creationTime;
+        this.transactionLocalTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(creationTime), ZoneId.of(zone));
+        
+        //time.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 
     public LocalDateTime localDateTime() {

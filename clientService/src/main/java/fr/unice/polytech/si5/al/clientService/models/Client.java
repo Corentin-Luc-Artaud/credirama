@@ -9,7 +9,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -38,10 +43,12 @@ public class Client {
     @NotNull
     double weight;
 
-    LocalDateTime creationTime;
+    long creationAbsoliteTime;
+    LocalDateTime creationLocalTime;
 
-    public void setCreationTime(LocalDateTime creationTime) {
-        this.creationTime = creationTime;
+    public void setCreationTime(long creationTime, String timezone) {
+        creationAbsoliteTime = creationTime;
+        creationLocalTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(creationTime), ZoneId.of(timezone));
     }
 
     @Override
