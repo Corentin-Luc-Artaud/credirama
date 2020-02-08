@@ -14,12 +14,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static java.time.temporal.ChronoUnit.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.*;
@@ -74,12 +76,12 @@ public class TransactionServiceTest {
         LocalDateTime start = LocalDateTime.now();
         long accountId = bankAccount.getId();
 
-        first = new Transaction(accountId, clientId, 200, start);
-        second = new Transaction(accountId, clientId, 200, start.plus(1200, ChronoUnit.MILLIS));
-        third = new Transaction(accountId, clientId, 200, start.plus(1300, ChronoUnit.MILLIS));
-        fourth = new Transaction(accountId, clientId, 200, start.plusMinutes(1));
-        fifth = new Transaction(accountId, clientId, 200, start.minusMinutes(1));
-        sixth = new Transaction(accountId, clientId, 200, start);
+        first = new Transaction(accountId, clientId, 200, start,"ECT");
+        second = new Transaction(accountId, clientId, 200, start.plus(1200, MILLIS), "ECT");
+        third = new Transaction(accountId, clientId, 200, start.plus(1300, MILLIS), "ECT");
+        fourth = new Transaction(accountId, clientId, 200, start.plusMinutes(1), "ECT");
+        fifth = new Transaction(accountId, clientId, 200, start.minusMinutes(1), "ECT");
+        sixth = new Transaction(accountId, clientId, 200, start, "ECT");
     }
 
     private void setupMocks() {

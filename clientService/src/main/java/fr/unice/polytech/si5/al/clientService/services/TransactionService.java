@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
+import static java.time.temporal.ChronoUnit.MILLIS;
+
 @Service
 public class TransactionService {
 
@@ -68,7 +70,7 @@ public class TransactionService {
         LocalDateTime prevTime = previous.localDateTime();
         LocalDateTime currentTime = current.localDateTime();
 
-        long timeSpan = ChronoUnit.MILLIS.between(prevTime, currentTime);
+        long timeSpan = MILLIS.between(prevTime, currentTime);
 
         if (timeSpan < 1000) {
             throw new TransactionException("new transaction too fast on same account");
@@ -76,7 +78,7 @@ public class TransactionService {
     }
 
     private void checkTimeSynchro(Transaction transaction) throws TransactionException {
-        long timeSpan = ChronoUnit.MILLIS.between(transaction.localDateTime(), timeService.getCurrentTime());
+        long timeSpan = MILLIS.between(transaction.localDateTime(), timeService.getCurrentTime());
 
         if (Math.abs(timeSpan) > 3000) {
             failRepository.save(transaction);

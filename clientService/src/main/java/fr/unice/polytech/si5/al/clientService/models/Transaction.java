@@ -7,9 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -33,16 +31,26 @@ public class Transaction {
     double amount;
 
     long transactionTime; //TODO UTC from time service
-    LocalDateTime transactionLocalTime; 
-    
+    ZonedDateTime transactionLocalTime;
+
 
     public Transaction(long accountID, long clientID, double amount, long creationTime, String zone) {
         this.accountID = accountID;
         this.clientID = clientID;
         this.amount = amount;
         this.transactionTime = creationTime;
-        this.transactionLocalTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(creationTime), ZoneId.of(zone));
-        
+        this.transactionLocalTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(creationTime), ZoneId.of(zone));
+
+        //time.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    }
+
+    public Transaction(long accountID, long clientID, double amount, LocalDateTime creationTime, String zone) {
+        this.accountID = accountID;
+        this.clientID = clientID;
+        this.amount = amount;
+        this.transactionTime = creationTime.toInstant(ZoneOffset.UTC).toEpochMilli();
+        this.transactionLocalTime = creationTime.atZone(ZoneId.of(zone));
+
         //time.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 
