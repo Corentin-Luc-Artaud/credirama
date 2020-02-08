@@ -22,8 +22,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -110,6 +109,12 @@ public class TransactionServiceTest {
             return failedTransactions;
         });
 
+        when(failRepository.save(any())).then(methodCall -> {
+            Transaction transaction = methodCall.getArgument(0);
+            failedTransactions.add(transaction);
+            return transaction;
+        });
+
         when(failRepository.count()).then(__ -> (long) failedTransactions.size());
 
         Mockito.doAnswer(__ -> {
@@ -190,9 +195,9 @@ public class TransactionServiceTest {
 
     @Test
     public void triggeringRecovery() throws TransactionException {
-        failRepository.saveAll(Arrays.asList(first, second, third, fourth, fifth));
+        failRepository.saveAll(Arrays.asList(first, second, third));//, fourth, fifth));
 
-        assertEquals(5, failRepository.count());
+        assertEquals(3, failRepository.count());
 
         mockTimeServiceToFail();
 
