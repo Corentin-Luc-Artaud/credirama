@@ -2,6 +2,7 @@ package fr.unice.polytech.si5.al.TimeService;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.logging.Logger;
 
@@ -11,6 +12,9 @@ public class TimeServiceRest {
 
     @Value("${failpercentage:5}") // default 1/20
     private double percentage_of_fail;
+
+    @Value("${recoverUrl:http://atomicclock/}")
+    private String recoverUrl;
 
     private long curTimeMillis;
     private double failValue;
@@ -37,7 +41,8 @@ public class TimeServiceRest {
 
     @PostMapping("/recover")
     public void Recover() {
-        this.curTimeMillis = System.currentTimeMillis();
+        RestTemplate resttemplate = new RestTemplate();
+        this.curTimeMillis = Long.parseLong(resttemplate.getForEntity(recoverUrl.toString(), String.class).getBody());
         failValue = Math.random()*100;
     }
 
