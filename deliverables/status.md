@@ -33,3 +33,14 @@ A more detailed explaination of these solutions is available [here](https://gith
 What's next : we need to create new tasks and user stories to organize and split the work. FLAG GREEN
 
 ---
+
+Status at 28-01-2020
+We working on implementing/testing potential solutions. We've made some tests also for the new implementations.
+FLAG GREEN
+
+---
+
+Status at 04-02-2020
+- For database failover, we have implemented the database replication with mysql and hproxy. We will work now on replicating using a CDC, kafka and another database to compare both
+- For the timezone managment, we pass all the dates with UTC format and we add a configurable local format  
+FLAG GREEN

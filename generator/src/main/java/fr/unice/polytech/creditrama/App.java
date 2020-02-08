@@ -23,9 +23,7 @@ public class App {
     public static void main(String[] args) throws IOException {
         String host = args.length != 0 ? args[0] : "http://localhost:";
 
-        long start = System.currentTimeMillis();
-
-        createBatch(2).forEach(client -> {
+        createBatch(50).forEach(client -> {
 
             LocalDateTime creationTime = TimeFactory.generateTimeStamp(client.getDateOfBirth());
             ClientCreationResponse response;
@@ -73,7 +71,5 @@ public class App {
                 e.printStackTrace();
             }*/
         });
-
-        System.out.println(">>>>>>> "+(System.currentTimeMillis() - start));
     }
 }
