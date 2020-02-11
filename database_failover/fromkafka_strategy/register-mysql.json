@@ -3,7 +3,7 @@
     "config": {
         "connector.class": "io.debezium.connector.mysql.MySqlConnector",
         "tasks.max": "1",
-        "database.hostname": "mysql",
+        "database.hostname": "mysql1",
         "database.port": "3306",
         "database.user": "debezium",
         "database.password": "dbz",
@@ -12,6 +12,10 @@
         "database.whitelist": "inventory",
         "database.history.kafka.bootstrap.servers": "kafka:9092",
         "database.history.kafka.topic": "schema-changes.inventory",
-        "gtid.new.channel.position": "earliest"
+        "gtid.new.channel.position": "earliest",
+        "transforms": "route",
+        "transforms.route.type": "org.apache.kafka.connect.transforms.RegexRouter",
+        "transforms.route.regex": "([^.]+)\\.([^.]+)\\.([^.]+)",
+        "transforms.route.replacement": "$3"
     }
 }
