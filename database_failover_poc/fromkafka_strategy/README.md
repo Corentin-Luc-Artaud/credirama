@@ -21,6 +21,7 @@ Start the components and register Debezium to stream changes from the database
 ```
 docker-compose up --build
 curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" http://localhost:8083/connectors/ -d @register-mysql.json
+curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" http://localhost:8083/connectors/ -d @jdbc-sink.json
 ```
 
 
@@ -28,6 +29,8 @@ Open a terminal, connect to the database and create two records.
 ```
 # Connect to MySQL 1, check server UUID and create two records
 docker-compose exec mysql1 bash -c 'mysql -u root -p$MYSQL_ROOT_PASSWORD inventory'
+docker-compose exec mysql2 bash -c 'mysql -u root -p$MYSQL_ROOT_PASSWORD inventory'
+
   SHOW GLOBAL VARIABLES LIKE 'server_uuid';
   INSERT INTO customers VALUES (default, 'Sami','Lazrak','sami.lazrak@example.com');
   INSERT INTO customers VALUES (default, 'Walid','Larabi','walid.larabi@example.com');

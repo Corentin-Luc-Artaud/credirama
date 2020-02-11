@@ -5,9 +5,9 @@
 # is not easily known to the Docker container. But don't do this in production.
 #
 GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'replicator' IDENTIFIED BY 'replpass';
-GRANT SELECT, RELOAD, SHOW DATABASES, REPLICATION SLAVE, REPLICATION CLIENT  ON *.* TO 'debezium' IDENTIFIED BY 'dbz';
-
+GRANT INSERT, UPDATE, SELECT, RELOAD, SHOW DATABASES, REPLICATION SLAVE, REPLICATION CLIENT  ON *.* TO 'debezium' IDENTIFIED BY 'dbz';
 # Create the database that we'll use to populate data and watch the effect in the binlog
+
 CREATE DATABASE inventory;
 GRANT ALL PRIVILEGES ON inventory.* TO 'mysqluser'@'%';
 
@@ -84,5 +84,5 @@ VALUES (default, '2016-01-16', 1001, 1, 102),
        (default, '2016-02-21', 1003, 1, 107);
 
 RESET MASTER;
-CHANGE MASTER TO MASTER_HOST='mysql1', MASTER_USER='debezium', MASTER_PASSWORD='dbz', MASTER_AUTO_POSITION=1;
+CHANGE MASTER TO MASTER_HOST='mysql2', MASTER_USER='debezium', MASTER_PASSWORD='dbz', MASTER_AUTO_POSITION=1;
 START SLAVE;

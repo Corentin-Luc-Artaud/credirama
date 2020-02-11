@@ -47,6 +47,7 @@ services:
     links:
      - kafka
      - mysql1
+     - mysql2
     environment:
      - BOOTSTRAP_SERVERS=kafka:9092
      - GROUP_ID=1
