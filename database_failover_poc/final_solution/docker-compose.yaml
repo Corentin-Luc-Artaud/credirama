@@ -17,7 +17,7 @@ services:
      - ZOOKEEPER_CONNECT=zookeeper:2181
 
   write_haproxy:
-    image: debezium/example-haproxy:1
+    image: debezium/example-haproxy-write:1
     build:
       context: write/haproxy
     ports:
@@ -28,7 +28,7 @@ services:
       - MYSQL_PASSWORD=mysqlpw
 
   read_haproxy:
-    image: debezium/example-haproxy:1
+    image: debezium/example-haproxy-read:1
     build:
       context: read/haproxy
     ports:
@@ -57,7 +57,7 @@ services:
       - MYSQL_PASSWORD=mysqlpw
 
   mysql3:
-    image: debezium/example-mysql-gtids1
+    image: debezium/example-mysql-gtids3
     build:
       context: read/mysql3
     environment:
@@ -66,7 +66,7 @@ services:
       - MYSQL_PASSWORD=mysqlpw
 
   mysql4:
-    image: debezium/example-mysql-gtids2
+    image: debezium/example-mysql-gtids4
     build:
       context: read/mysql4
     environment:
