@@ -16,12 +16,32 @@ services:
     environment:
      - ZOOKEEPER_CONNECT=zookeeper:2181
 
+  write_haproxy:
+    image: debezium/example-haproxy:1
+    build:
+      context: write/haproxy
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=debezium
+      - MYSQL_USER=mysqluser
+      - MYSQL_PASSWORD=mysqlpw
+
+  read_haproxy:
+    image: debezium/example-haproxy:1
+    build:
+      context: read/haproxy
+    ports:
+      - 3307:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=debezium
+      - MYSQL_USER=mysqluser
+      - MYSQL_PASSWORD=mysqlpw
+
   mysql1:
     image: debezium/example-mysql-gtids1
     build:
-      context: mysql1
-    ports:
-      - 3306:3306
+      context: write/mysql1
     environment:
      - MYSQL_ROOT_PASSWORD=debezium
      - MYSQL_USER=mysqluser
@@ -30,9 +50,25 @@ services:
   mysql2:
     image: debezium/example-mysql-gtids2
     build:
-      context: mysql2
-    ports:
-      - 3307:3306
+      context: write/mysql2
+    environment:
+      - MYSQL_ROOT_PASSWORD=debezium
+      - MYSQL_USER=mysqluser
+      - MYSQL_PASSWORD=mysqlpw
+
+  mysql3:
+    image: debezium/example-mysql-gtids1
+    build:
+      context: read/mysql3
+    environment:
+      - MYSQL_ROOT_PASSWORD=debezium
+      - MYSQL_USER=mysqluser
+      - MYSQL_PASSWORD=mysqlpw
+
+  mysql4:
+    image: debezium/example-mysql-gtids2
+    build:
+      context: read/mysql4
     environment:
       - MYSQL_ROOT_PASSWORD=debezium
       - MYSQL_USER=mysqluser
@@ -46,7 +82,8 @@ services:
      - 8083:8083
     links:
      - kafka
-     - mysql1
+     - write_haproxy
+     - read_haproxy
     environment:
      - BOOTSTRAP_SERVERS=kafka:9092
      - GROUP_ID=1

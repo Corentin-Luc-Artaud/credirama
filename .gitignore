@@ -137,3 +137,4 @@ buildNumber.properties
 
 **dumps/**
 /database_failover/.idea/
+/kafkaconnector/nodejs/node_modules/
