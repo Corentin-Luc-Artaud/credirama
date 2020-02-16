@@ -78,6 +78,8 @@ services:
     build:
       context: clientService
     image: clientservice:latest
+    environment:
+        - locale=ETC
     expose:
       - 8080
     ports:
@@ -94,6 +96,8 @@ services:
   client-service-us:
     container_name: clientservice-us
     image: clientservice:latest
+    environment:
+      - locale=EST
     expose:
       - 8080
     ports:

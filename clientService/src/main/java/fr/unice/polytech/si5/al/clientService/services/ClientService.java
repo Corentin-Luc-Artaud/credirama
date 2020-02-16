@@ -7,7 +7,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import java.time.ZoneId;
 import java.util.List;
+import java.util.TimeZone;
 
 @Service
 public class ClientService {
@@ -26,7 +28,7 @@ public class ClientService {
     public String addNewClient(Client client) {
         try {
             root_logger.info(client);
-            client.setCreationTime(timeService.getCurrentTime(), );
+            client.setCreationTime(timeService.getCurrentTime(), System.getProperty("locale"));
             long idNewClient = clientRegisterer.addNewClient(client);
             long idAccount = accountCreator.createNewAccount(idNewClient);
             return "{\"status\":\"OK\", \"accountID\":" + idAccount + ", \"clientID\":" + idNewClient + "}";
