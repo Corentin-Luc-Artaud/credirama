@@ -14,17 +14,21 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDateTime;
+<<<<<<< HEAD
 import java.time.ZoneOffset;
+=======
+import java.time.ZoneId;
+>>>>>>> 06b41ce317ed7f81fb2fe41df829003f4692838c
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static java.time.temporal.ChronoUnit.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -76,12 +80,12 @@ public class TransactionServiceTest {
         LocalDateTime start = LocalDateTime.now();
         long accountId = bankAccount.getId();
 
-        first = new Transaction(accountId, clientId, 200, start.toEpochSecond(ZoneOffset.ofHours(0)));
-        second = new Transaction(accountId, clientId, 200, start.plus(1200, ChronoUnit.MILLIS));
-        third = new Transaction(accountId, clientId, 200, start.plus(1300, ChronoUnit.MILLIS));
-        fourth = new Transaction(accountId, clientId, 200, start.plusMinutes(1));
-        fifth = new Transaction(accountId, clientId, 200, start.minusMinutes(1));
-        sixth = new Transaction(accountId, clientId, 200, start);
+        first = new Transaction(accountId, clientId, 200, start,"ECT");
+        second = new Transaction(accountId, clientId, 200, start.plus(1200, MILLIS), "ECT");
+        third = new Transaction(accountId, clientId, 200, start.plus(1300, MILLIS), "ECT");
+        fourth = new Transaction(accountId, clientId, 200, start.plusMinutes(1), "ECT");
+        fifth = new Transaction(accountId, clientId, 200, start.minusMinutes(1), "ECT");
+        sixth = new Transaction(accountId, clientId, 200, start, "ECT");
     }
 
     private void setupMocks() {
@@ -109,6 +113,12 @@ public class TransactionServiceTest {
         when(failRepository.saveAll(anyList())).then(methodCall -> {
             failedTransactions.addAll(methodCall.getArgument(0));
             return failedTransactions;
+        });
+
+        when(failRepository.save(any())).then(methodCall -> {
+            Transaction transaction = methodCall.getArgument(0);
+            failedTransactions.add(transaction);
+            return transaction;
         });
 
         when(failRepository.count()).then(__ -> (long) failedTransactions.size());
@@ -191,9 +201,9 @@ public class TransactionServiceTest {
 
     @Test
     public void triggeringRecovery() throws TransactionException {
-        failRepository.saveAll(Arrays.asList(first, second, third, fourth, fifth));
+        failRepository.saveAll(Arrays.asList(first, second, third));//, fourth, fifth));
 
-        assertEquals(5, failRepository.count());
+        assertEquals(3, failRepository.count());
 
         mockTimeServiceToFail();
 
