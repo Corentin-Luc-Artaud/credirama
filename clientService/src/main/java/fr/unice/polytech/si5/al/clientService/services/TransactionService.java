@@ -79,11 +79,7 @@ public class TransactionService {
     }
 
     private void checkTimeSynchro(Transaction transaction) throws TransactionException {
-<<<<<<< HEAD
         long timeSpan = transaction.getTransactionTime() - timeService.getCurrentTime();
-=======
-        long timeSpan = MILLIS.between(transaction.localDateTime(), timeService.getCurrentTime());
->>>>>>> 06b41ce317ed7f81fb2fe41df829003f4692838c
 
         if (Math.abs(timeSpan) > 3000) {
             failRepository.save(transaction);
