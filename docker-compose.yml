@@ -1,6 +1,5 @@
 version: '3.4'
 services:
-
   elasticsearch:
     build:
       context: elasticsearch/
@@ -20,13 +19,11 @@ services:
     environment:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
       ELASTIC_PASSWORD: changeme
-
     healthcheck:
       test: ["CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health || exit 1"]
       interval: 30s
       timeout: 30s
       retries: 3
-
 
   kibana:
     build:
@@ -43,7 +40,6 @@ services:
     depends_on:
       - elasticsearch
 
-
   db:
     image: postgres:latest
     ports:
@@ -52,15 +48,12 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=docker
       - POSTGRES_DB=postgres
-
   zookeeper:
     image: wurstmeister/zookeeper
     ports:
       - "2181:2181"
     expose:
       - "2181"
-
-
   kafka:
     image: wurstmeister/kafka:latest
     ports:
@@ -79,10 +72,9 @@ services:
     depends_on:
       - zookeeper
       - db
-
-
-  client-service:
-    container_name: clientservice
+  ############################################################
+  client-service-fr:
+    container_name: clientservice-fr
     build:
       context: clientService
     image: clientservice:latest
@@ -90,18 +82,32 @@ services:
       - 8080
     ports:
       - "8080:8080"
-
     links:
       - db
       - time-service
       - elasticsearch
-
     depends_on:
       - elasticsearch
       - kafka
       - time-service
 
+  client-service-us:
+    container_name: clientservice-us
+    image: clientservice:latest
+    expose:
+      - 8080
+    ports:
+      - "9080:8080"
+    links:
+      - db
+      - time-service
+      - elasticsearch
+    depends_on:
+      - elasticsearch
+      - kafka
+      - time-service
 
+  ############################################################
   time-service:
     container_name: timeservice
     build:
@@ -112,30 +118,41 @@ services:
     ports:
       - "8081:8081"
 
+  atomic-time-service:
+    container_name: timeservice
+    build:
+      context: TimeService
+    image: timeservice:latest
+    expose:
+      - 8081
+    ports:
+      - "9081:8081"
+
+  ############################################################
+
   analyst-service:
     container_name: analystservice
     build:
       context: analystservice
     image: analystservice:latest
-    depends_on: 
+    depends_on:
       - elasticsearch
       - kibana
     ports:
       - "9500:9300"
 
-
-#  streamsets:
-#    image: streamsets/datacollector
-#    ports:
-#      - "18630:18630"
-
+  #  streamsets:
+  #    image: streamsets/datacollector
+  #    ports:
+  #      - "18630:18630"
   kafka-connector:
     container_name: kafkaconnector
     build:
       context: kafkaconnector/nodejs/.
     image: kafkaconnector:latest
     depends_on:
-      - client-service
+      - client-service-fr
+      - client-service-us
 
   launch-barebone:
     image: dadarek/wait-for-dependencies
@@ -145,7 +162,7 @@ services:
       - elasticsearch
       - kibana
       - db
-    command: 
+    command:
       - zookeeper:2181
       - kafka:9092
       - db:5432
@@ -156,18 +173,17 @@ services:
     image: dadarek/wait-for-dependencies
     depends_on:
       - kafka-connector
-      - client-service
+      - client-service-fr
+      - client-service-us
       - time-service
       - analyst-service
-    command: 
+      - atomic-time-service
+    command:
+      - atomic-time-service:9081
       - time-service:8081
-      - client-service:8080
+      - client-service-fr:8080
+      - client-service-us:9080
       - analyst-service:9300
-
-
 
 volumes:
   elasticsearch:
-
-
-

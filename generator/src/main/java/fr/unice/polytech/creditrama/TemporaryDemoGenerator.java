@@ -13,6 +13,7 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 
 /**
  * Hello world!
@@ -21,7 +22,9 @@ public class TemporaryDemoGenerator {
 
     private static final String HOST = "http://localhost:";
     private static final String TIME_SERVICE = "8081/";
-    private static final String CLIENTS = "8080/clients/";
+    private static final String ATOMIC_TIME_SERVICE = "9081/";
+    private static final String CLIENTS_FR = "8080/clients/";
+    private static final String CLIENTS_US = "9080/clients/";
     private static final String TRANSACTIONS = "8080/transactions/";
 
     private static final Gson gson = new Gson();
@@ -91,19 +94,22 @@ public class TemporaryDemoGenerator {
     }
 
     private static void setTime(LocalDateTime time) {
-        try {
-            URL url = new URL(HOST + TIME_SERVICE);
-            RestTemplate restTemplate = new RestTemplate();
-            long millis = getMillis(time);
-            restTemplate.postForEntity(url.toString(), millis, long.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Arrays.asList(TIME_SERVICE, ATOMIC_TIME_SERVICE)
+                .forEach(__ -> {
+                    try {
+                        URL url = new URL(HOST + __);
+                        RestTemplate restTemplate = new RestTemplate();
+                        long millis = getMillis(time);
+                        restTemplate.postForEntity(url.toString(), millis, long.class);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
     }
 
     private static void createClient(Client client) {
         try {
-            URL url = new URL(HOST + CLIENTS);
+            URL url = new URL(HOST + CLIENTS_FR);
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(url.toString(), client, String.class);
 

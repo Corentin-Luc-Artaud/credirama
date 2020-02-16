@@ -14,6 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,7 +76,7 @@ public class TransactionServiceTest {
         LocalDateTime start = LocalDateTime.now();
         long accountId = bankAccount.getId();
 
-        first = new Transaction(accountId, clientId, 200, start);
+        first = new Transaction(accountId, clientId, 200, start.toEpochSecond(ZoneOffset.ofHours(0)));
         second = new Transaction(accountId, clientId, 200, start.plus(1200, ChronoUnit.MILLIS));
         third = new Transaction(accountId, clientId, 200, start.plus(1300, ChronoUnit.MILLIS));
         fourth = new Transaction(accountId, clientId, 200, start.plusMinutes(1));

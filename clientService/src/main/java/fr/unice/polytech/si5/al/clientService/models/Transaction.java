@@ -49,4 +49,8 @@ public class Transaction {
     public LocalDateTime localDateTime() {
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(transactionTime), ZoneId.systemDefault());
     }
+
+    public long getTransactionTime() {
+        return this.transactionTime;
+    }
 }

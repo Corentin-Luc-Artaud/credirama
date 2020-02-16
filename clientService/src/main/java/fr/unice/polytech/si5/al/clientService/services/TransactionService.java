@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -76,7 +77,7 @@ public class TransactionService {
     }
 
     private void checkTimeSynchro(Transaction transaction) throws TransactionException {
-        long timeSpan = ChronoUnit.MILLIS.between(transaction.localDateTime(), timeService.getCurrentTime());
+        long timeSpan = transaction.getTransactionTime() - timeService.getCurrentTime();
 
         if (Math.abs(timeSpan) > 3000) {
             failRepository.save(transaction);

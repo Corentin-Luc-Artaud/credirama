@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.annotation.PostConstruct;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Service
 @EnableConfigurationProperties
@@ -24,18 +24,18 @@ public class TimeService {
         System.out.println("url: " + url);
     }
 
-    public LocalDateTime getCurrentTime() {
+    public long getCurrentTime() {
         if (this.url == null) {
-            return LocalDateTime.now();
+            return new Date().getTime();
         }
 
         try {
             URL url = new URL(this.url);
             RestTemplate restTemplate = new RestTemplate();
-            return LocalDateTime.parse(restTemplate.getForEntity(url.toString(), String.class).getBody());
+            return Long.parseLong(restTemplate.getForEntity(url.toString(), String.class).getBody());
         } catch (Exception e) {
             mLogger.error(e.getMessage());
-            return LocalDateTime.now();
+            return new Date().getTime();
         }
     }
 
