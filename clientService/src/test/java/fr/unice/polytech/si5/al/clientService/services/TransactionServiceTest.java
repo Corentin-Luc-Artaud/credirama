@@ -14,14 +14,10 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDateTime;
-<<<<<<< HEAD
 import java.time.ZoneOffset;
-=======
-import java.time.ZoneId;
->>>>>>> 06b41ce317ed7f81fb2fe41df829003f4692838c
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,12 +76,12 @@ public class TransactionServiceTest {
         LocalDateTime start = LocalDateTime.now();
         long accountId = bankAccount.getId();
 
-        first = new Transaction(accountId, clientId, 200, start,"ECT");
-        second = new Transaction(accountId, clientId, 200, start.plus(1200, MILLIS), "ECT");
-        third = new Transaction(accountId, clientId, 200, start.plus(1300, MILLIS), "ECT");
-        fourth = new Transaction(accountId, clientId, 200, start.plusMinutes(1), "ECT");
-        fifth = new Transaction(accountId, clientId, 200, start.minusMinutes(1), "ECT");
-        sixth = new Transaction(accountId, clientId, 200, start, "ECT");
+        first = new Transaction(accountId, clientId, 200, start,"UTC+01:00");
+        second = new Transaction(accountId, clientId, 200, start.plus(1200, MILLIS), "UTC+01:00");
+        third = new Transaction(accountId, clientId, 200, start.plus(1300, MILLIS), "UTC+01:00");
+        fourth = new Transaction(accountId, clientId, 200, start.plusMinutes(1), "UTC+01:00");
+        fifth = new Transaction(accountId, clientId, 200, start.minusMinutes(1), "UTC+01:00");
+        sixth = new Transaction(accountId, clientId, 200, start, "UTC+01:00");
     }
 
     private void setupMocks() {
@@ -108,7 +104,7 @@ public class TransactionServiceTest {
                     }
                 });
 
-        when(timeService.getCurrentTime()).thenReturn(LocalDateTime.now());
+        when(timeService.getCurrentTime()).thenReturn(new Date().getTime());
 
         when(failRepository.saveAll(anyList())).then(methodCall -> {
             failedTransactions.addAll(methodCall.getArgument(0));
@@ -135,11 +131,11 @@ public class TransactionServiceTest {
     }
 
     private void mockTimeServiceToFail() {
-        when(timeService.getCurrentTime()).thenReturn(LocalDateTime.now().minusMinutes(4));
+        when(timeService.getCurrentTime()).thenReturn(LocalDateTime.now().minusMinutes(4).toEpochSecond(ZoneOffset.ofHours(0)));
     }
 
     private void recoverTimeService() {
-        when(timeService.getCurrentTime()).thenReturn(LocalDateTime.now());
+        when(timeService.getCurrentTime()).thenReturn(LocalDateTime.now().toEpochSecond(ZoneOffset.ofHours(0)));
     }
 
     @Test
@@ -218,7 +214,7 @@ public class TransactionServiceTest {
 
         service.handleTransaction(sixth);
 
-        assertEquals(timeService.getCurrentTime().withNano(0), LocalDateTime.now().withNano(0));
+        assertEquals(timeService.getCurrentTime(), LocalDateTime.now().withNano(0));
         assertEquals(0, failRepository.count());
     }
 }

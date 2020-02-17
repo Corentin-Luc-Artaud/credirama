@@ -9,8 +9,6 @@ import fr.unice.polytech.si5.al.clientService.repositories.TransactionRepository
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.Optional;
 
 import static java.time.temporal.ChronoUnit.MILLIS;
