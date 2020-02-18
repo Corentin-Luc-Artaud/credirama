@@ -12,8 +12,11 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+
+import static java.time.ZoneOffset.*;
 
 /**
  * Hello world!
@@ -30,8 +33,8 @@ public class TemporaryDemoGenerator {
     private static final Gson gson = new Gson();
 
     public static void main(String[] args) {
-        LocalDateTime create = LocalDateTime.now().minusHours(1);
-        LocalDateTime first = LocalDateTime.now();
+        LocalDateTime create = LocalDateTime.now(UTC).minusHours(1);
+        LocalDateTime first = LocalDateTime.now(UTC);
         LocalDateTime second = first.plus(1200, ChronoUnit.MILLIS);
         LocalDateTime third = second.plus(100, ChronoUnit.MILLIS);
         LocalDateTime fourth = first.plusMinutes(1);

@@ -79,7 +79,7 @@ public class TransactionService {
     private void checkTimeSynchro(Transaction transaction) throws TransactionException {
         long timeSpan = transaction.getTransactionTime() - timeService.getCurrentTime();
 
-        if (Math.abs(timeSpan) > 3000) {
+        if (Math.abs(timeSpan) > 60*1000) {
             failRepository.save(transaction);
             introspection();
             throw new TransactionException("this transaction has a timestamp too different compared to our system !");

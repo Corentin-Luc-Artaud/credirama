@@ -17,11 +17,11 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static java.time.temporal.ChronoUnit.*;
+import static java.time.ZoneOffset.UTC;
+import static java.time.temporal.ChronoUnit.MILLIS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.*;
@@ -73,15 +73,19 @@ public class TransactionServiceTest {
         bankAccount.setClientId(clientId);
         bankAccount.setAmount(300);
 
-        LocalDateTime start = LocalDateTime.now();
+        LocalDateTime start = LocalDateTime.now(UTC);
         long accountId = bankAccount.getId();
 
-        first = new Transaction(accountId, clientId, 200, start,"UTC+01:00");
-        second = new Transaction(accountId, clientId, 200, start.plus(1200, MILLIS), "UTC+01:00");
-        third = new Transaction(accountId, clientId, 200, start.plus(1300, MILLIS), "UTC+01:00");
-        fourth = new Transaction(accountId, clientId, 200, start.plusMinutes(1), "UTC+01:00");
-        fifth = new Transaction(accountId, clientId, 200, start.minusMinutes(1), "UTC+01:00");
-        sixth = new Transaction(accountId, clientId, 200, start, "UTC+01:00");
+        first = new Transaction(accountId, clientId, 200, toLong(start), "+01:00");
+        second = new Transaction(accountId, clientId, 200, toLong(start.plus(1200, MILLIS)), "+01:00");
+        third = new Transaction(accountId, clientId, 200, toLong(start.plus(1300, MILLIS)), "+01:00");
+        fourth = new Transaction(accountId, clientId, 200, toLong(start.plusMinutes(2)), "+01:00");
+        fifth = new Transaction(accountId, clientId, 200, toLong(start.minusMinutes(2)), "+01:00");
+        sixth = new Transaction(accountId, clientId, 200, toLong(start), "+01:00");
+    }
+
+    long toLong(LocalDateTime ldt) {
+        return ldt.toInstant(ZoneOffset.ofHours(0)).toEpochMilli();
     }
 
     private void setupMocks() {
@@ -104,7 +108,7 @@ public class TransactionServiceTest {
                     }
                 });
 
-        when(timeService.getCurrentTime()).thenReturn(new Date().getTime());
+        when(timeService.getCurrentTime()).thenReturn(LocalDateTime.now(UTC).toInstant(ZoneOffset.ofHours(0)).toEpochMilli());
 
         when(failRepository.saveAll(anyList())).then(methodCall -> {
             failedTransactions.addAll(methodCall.getArgument(0));
@@ -131,11 +135,11 @@ public class TransactionServiceTest {
     }
 
     private void mockTimeServiceToFail() {
-        when(timeService.getCurrentTime()).thenReturn(LocalDateTime.now().minusMinutes(4).toEpochSecond(ZoneOffset.ofHours(0)));
+        when(timeService.getCurrentTime()).thenReturn(LocalDateTime.now(UTC).minusMinutes(4).toInstant(ZoneOffset.ofHours(0)).toEpochMilli());
     }
 
     private void recoverTimeService() {
-        when(timeService.getCurrentTime()).thenReturn(LocalDateTime.now().toEpochSecond(ZoneOffset.ofHours(0)));
+        when(timeService.getCurrentTime()).thenReturn(LocalDateTime.now(UTC).toInstant(ZoneOffset.ofHours(0)).toEpochMilli());
     }
 
     @Test
@@ -214,7 +218,9 @@ public class TransactionServiceTest {
 
         service.handleTransaction(sixth);
 
-        assertEquals(timeService.getCurrentTime(), LocalDateTime.now().withNano(0));
+        assertEquals(timeService.getCurrentTime(), LocalDateTime.now(UTC).toInstant(ZoneOffset.ofHours(0)).toEpochMilli(), 10);
         assertEquals(0, failRepository.count());
     }
+
+
 }

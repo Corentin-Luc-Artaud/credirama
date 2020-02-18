@@ -10,7 +10,11 @@ import org.springframework.web.client.RestTemplate;
 import javax.annotation.PostConstruct;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
+
+import static java.time.ZoneOffset.UTC;
 
 @Service
 @EnableConfigurationProperties
@@ -26,7 +30,7 @@ public class TimeService {
 
     public long getCurrentTime() {
         if (this.url == null) {
-            return new Date().getTime();
+            return LocalDateTime.now(UTC).toInstant(ZoneOffset.ofHours(0)).toEpochMilli();
         }
 
         try {
