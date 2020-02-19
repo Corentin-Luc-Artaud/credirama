@@ -183,7 +183,7 @@ services:
       - analyst-service
       - atomic-time-service
     command:
-      - atomic-time-service:9081
+      - atomic-time-service:8081
       - time-service:8081
       - client-service-fr:8080
       - client-service-us:9080
