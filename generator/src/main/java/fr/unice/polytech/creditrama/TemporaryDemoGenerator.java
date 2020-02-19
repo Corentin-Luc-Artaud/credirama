@@ -12,11 +12,10 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 
-import static java.time.ZoneOffset.*;
+import static java.time.ZoneOffset.UTC;
 
 /**
  * Hello world!
@@ -48,10 +47,12 @@ public class TemporaryDemoGenerator {
         // CREATE OUR CLIENT
         Client client = new AdultSerious();
         createClient(client);
+        System.out.println("\n -- " + client.toString());
 
 
+        return;
         // PUBLISH TRANSACTIONS
-        try {
+        /*try {
             publish(new Transaction(client, 200, first), "First transaction (Success)");
             publish(new Transaction(client, 200, second), "Second transaction (Success)");
             publish(new Transaction(client, 200, third), "Third transaction (Fail, too fast)");
@@ -61,7 +62,7 @@ public class TemporaryDemoGenerator {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @SneakyThrows

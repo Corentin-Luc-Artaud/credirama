@@ -33,21 +33,18 @@ public class Transaction {
     double amount;
 
     long transactionTime;
-    ZoneOffset offset;
+    String zone;
 
     public Transaction(long accountID, long clientID, double amount, long creationTime, String zone) {
         this.accountID = accountID;
         this.clientID = clientID;
         this.amount = amount;
         this.transactionTime = creationTime;
-        this.offset = ZoneOffset.of(zone);
+        this.zone = zone;
     }
 
     public LocalDateTime localDateTime() {
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(transactionTime), offset);
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(transactionTime), ZoneOffset.of(zone));
     }
 
-    public long getTransactionTime() {
-        return this.transactionTime;
-    }
 }

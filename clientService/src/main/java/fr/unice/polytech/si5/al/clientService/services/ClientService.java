@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -28,13 +29,15 @@ public class ClientService {
     public String addNewClient(Client client) {
         try {
             root_logger.info(client);
-            client.setCreationTime(timeService.getCurrentTime(), System.getProperty("locale"));
+            client.setCreationTime(timeService.getCurrentTime(), "UTC");
             long idNewClient = clientRegisterer.addNewClient(client);
             long idAccount = accountCreator.createNewAccount(idNewClient);
+            System.out.println("You have been registered successfully : your new account is " + idAccount + " and your client id is " + idNewClient);
+
             return "{\"status\":\"OK\", \"accountID\":" + idAccount + ", \"clientID\":" + idNewClient + "}";
-            //return "You have been registered successfully : your new account is " + idAccount + " and your client id is " + idNewClient;
+
         } catch (Exception e) {
-            return "{\"status\":\"ERROR\", \"cause\":\"" + e.getMessage() + "\"}";
+            return "{\"status\":\"ERROR\", \"cause\":\"" + Arrays.toString(e.getStackTrace()) + "\"}";
         }
     }
 
