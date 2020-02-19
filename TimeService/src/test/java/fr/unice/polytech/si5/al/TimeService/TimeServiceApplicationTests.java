@@ -31,7 +31,7 @@ class TimeServiceApplicationTests {
         assertEquals("OK", res);
     }
 
-    @Test
+    //@Test
     public void testFailOfTimeService() {
         double mean = -1.0;
         Map<Integer, Integer> results = new HashMap<>();
