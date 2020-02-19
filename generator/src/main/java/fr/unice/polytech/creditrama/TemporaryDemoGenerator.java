@@ -103,7 +103,7 @@ public class TemporaryDemoGenerator {
                         URL url = new URL(HOST + __);
                         RestTemplate restTemplate = new RestTemplate();
                         long millis = getMillis(time);
-                        restTemplate.postForEntity(url.toString(), millis, long.class);
+                        restTemplate.postForEntity(url.toString(), millis, String.class);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
