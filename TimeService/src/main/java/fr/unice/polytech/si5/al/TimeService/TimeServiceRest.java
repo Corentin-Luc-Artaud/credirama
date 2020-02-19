@@ -25,7 +25,7 @@ public class TimeServiceRest {
         failValue = Math.random()*100;
     }
 
-    @PostMapping(value = "/", consumes = "text/plain")
+    @PostMapping(value = "/", consumes = "application/json")
     public String setTime(@RequestBody long timestamp) {
         //System.out.println("Accessed POST - " + string);
         failValue = Math.random()*100;

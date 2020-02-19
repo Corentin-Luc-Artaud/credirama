@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 import static fr.unice.polytech.creditrama.ClientFactory.createBatch;
 
@@ -32,7 +33,7 @@ public class App {
             try {
                 URL url = new URL(host + "8081/");
                 RestTemplate restTemplate = new RestTemplate();
-                String time = creationTime.toString();
+                long time = creationTime.toEpochSecond(ZoneOffset.ofHours(0));
                 logger.info("Setting time to " + time);
                 restTemplate.postForEntity(url.toString(), time, String.class);
             } catch (Exception e) {
