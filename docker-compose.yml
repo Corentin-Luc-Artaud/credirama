@@ -186,7 +186,7 @@ services:
       - atomic-time-service:8081
       - time-service:8081
       - client-service-fr:8080
-      - client-service-us:9080
+      - client-service-us:8080
       - analyst-service:9300
 
 volumes:
