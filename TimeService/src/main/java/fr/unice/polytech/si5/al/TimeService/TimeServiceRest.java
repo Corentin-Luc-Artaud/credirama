@@ -3,6 +3,9 @@ package fr.unice.polytech.si5.al.TimeService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.logging.Logger;
 
 @RestController
@@ -19,16 +22,20 @@ public class TimeServiceRest {
 
     private long curTimeMillis;
     private double failValue;
+
+    private long offset = 0;
+
     // private Random random;
 
     public TimeServiceRest() {
         this.curTimeMillis = System.currentTimeMillis();
+        this.recoverTime = System.currentTimeMillis();
         failValue = Math.random() * 100;
     }
 
     @PostMapping(value = "/", consumes = "application/json")
     public String setTime(@RequestBody long timestamp) {
-        System.out.println("---- Accessed POST - " + timestamp + " ----");
+        System.out.println("-- Accessed POST        " + ldtString(timestamp));
         failValue = Math.random() * 100;
         curTimeMillis = timestamp;
         recoverTime = timestamp;
@@ -37,10 +44,20 @@ public class TimeServiceRest {
 
     @PostMapping(value = "/fail")
     public String failNow() {
-
-        curTimeMillis = curTimeMillis - (4 * 60 * 1000);
-        System.out.println("---- Fail time is now " + curTimeMillis + " ----");
+        //curTimeMillis = curTimeMillis - (4 * 60 * 1000);
+        offset = 4 * 60 * 1000;
+        System.out.println("╔══════════════════════╗");
+        System.out.println("║  Fail, time is now   ║ " + ldtString(System.currentTimeMillis() - offset));
+        System.out.println("╚══════════════════════╝");
         failValue = -1;
+        return "OK";
+    }
+
+    @PostMapping(value = "/slientrecover")
+    public String SilentRecover() {
+        offset = 0;
+        //this.curTimeMillis = recoverTime;
+        failValue = Math.random() * 100;
         return "OK";
     }
 
@@ -48,9 +65,12 @@ public class TimeServiceRest {
     public String Recover() {
         //RestTemplate resttemplate = new RestTemplate();
         //this.curTimeMillis = Long.parseLong(resttemplate.getForEntity(recoverUrl, String.class).getBody());
-        this.curTimeMillis = recoverTime;
+        offset = 0;
+        //this.curTimeMillis = recoverTime;
         failValue = Math.random() * 100;
-        System.out.println("---- Recover time is now " + curTimeMillis + " ----");
+        System.out.println("╔══════════════════════╗");
+        System.out.println("║ Recover, time is now ║ " + ldtString(System.currentTimeMillis()));
+        System.out.println("╚══════════════════════╝");
         return "OK";
     }
 
@@ -62,8 +82,9 @@ public class TimeServiceRest {
 
     @GetMapping(value = "/")
     public long getTime() {
-        System.out.println("----Accessed GET - " + curTimeMillis + " ----");
-        return curTimeMillis;
+        System.out.println("-- Accessed GET          " + ldtString(System.currentTimeMillis() - offset));
+        //return curTimeMillis;
+        return System.currentTimeMillis() - offset;
     }
 
     /**
@@ -78,5 +99,9 @@ public class TimeServiceRest {
         } else if (failValue > 0) {
             failValue -= percentage_of_fail;
         }
+    }
+
+    private String ldtString(long curTimeMillis) {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(curTimeMillis), ZoneId.systemDefault()).toLocalTime().toString();
     }
 }

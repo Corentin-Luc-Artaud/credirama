@@ -58,7 +58,7 @@ public class TemporaryDemoGenerator {
             publish(new Transaction(client, 200, second), "Second transaction (Success)");
             publish(new Transaction(client, 200, third), "Third transaction (Fail, too fast)");
             publish(new Transaction(client, 200, fourth), "Fourth transaction (Fail, in future)");
-            publish(new Transaction(client, 200, fifth), "Fifth transaction (Fail, in past)");
+            //publish(new Transaction(client, 200, fifth), "Fifth transaction (Fail, in past)");
             //publishToFail(new Transaction(client, 200, sixth));
 
         } catch (Exception e) {

@@ -53,6 +53,26 @@ public class TimeService {
         }
     }
 
+    public void silentRecover() {
+        try {
+            URL url = new URL(this.url + "slientrecover");
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.postForObject(url.toString(), "", String.class);
+        } catch (MalformedURLException e) {
+            mLogger.error(e.getMessage());
+        }
+    }
+
+    public void fail() {
+        try {
+            URL url = new URL(this.url + "fail");
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.postForObject(url.toString(), "", String.class);
+        } catch (MalformedURLException e) {
+            mLogger.error(e.getMessage());
+        }
+    }
+
     /**
      * @param url the url to set
      */
