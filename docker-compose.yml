@@ -73,13 +73,13 @@ services:
       - zookeeper
       - db
   ############################################################
-  client-service-fr:
-    container_name: clientservice-fr
+  client-service:
+    container_name: clientservice
     build:
       context: clientService
     image: clientservice:latest
     environment:
-        - locale=ETC
+        - locale=+01:00
     expose:
       - 8080
     ports:
@@ -93,23 +93,23 @@ services:
       - kafka
       - time-service
 
-  client-service-us:
-    container_name: clientservice-us
-    image: clientservice:latest
-    environment:
-      - locale=EST
-    expose:
-      - 8080
-    ports:
-      - "9080:8080"
-    links:
-      - db
-      - time-service
-      - elasticsearch
-    depends_on:
-      - elasticsearch
-      - kafka
-      - time-service
+#  client-service-us:
+#    container_name: clientservice-us
+#    image: clientservice:latest
+#    environment:
+#      - locale=EST
+#    expose:
+#      - 8080
+#    ports:
+#      - "9080:8080"
+#    links:
+#      - db
+#      - time-service
+#      - elasticsearch
+#    depends_on:
+#      - elasticsearch
+#      - kafka
+#      - time-service
 
   ############################################################
   time-service:
@@ -155,8 +155,8 @@ services:
       context: kafkaconnector/nodejs/.
     image: kafkaconnector:latest
     depends_on:
-      - client-service-fr
-      - client-service-us
+      - client-service
+      #- client-service-us
 
   launch-barebone:
     image: dadarek/wait-for-dependencies
@@ -177,16 +177,16 @@ services:
     image: dadarek/wait-for-dependencies
     depends_on:
       - kafka-connector
-      - client-service-fr
-      - client-service-us
+      - client-service
+      #- client-service-us
       - time-service
       - analyst-service
       #- atomic-time-service
     command:
       #- atomic-time-service:8081
       - time-service:8081
-      - client-service-fr:8080
-      - client-service-us:8080
+      - client-service:8080
+      #- client-service-us:8080
       - analyst-service:9300
 
 volumes:

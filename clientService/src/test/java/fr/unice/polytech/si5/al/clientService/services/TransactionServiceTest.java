@@ -22,8 +22,7 @@ import java.util.Optional;
 
 import static java.time.ZoneOffset.UTC;
 import static java.time.temporal.ChronoUnit.MILLIS;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -170,7 +169,7 @@ public class TransactionServiceTest {
             service.handleTransaction(fourth);
             fail();
         } catch (TransactionException te) {
-            assertEquals("this transaction has a timestamp too different compared to our system !", te.getMessage());
+            assertTrue(te.getMessage().contains("this transaction has a timestamp too different compared to our system !"));
         }
     }
 
@@ -182,7 +181,7 @@ public class TransactionServiceTest {
             service.handleTransaction(fifth);
             fail();
         } catch (TransactionException te) {
-            assertEquals("this transaction has a timestamp too different compared to our system !", te.getMessage());
+            assertTrue(te.getMessage().contains("this transaction has a timestamp too different compared to our system !"));
         }
     }
 
@@ -195,7 +194,7 @@ public class TransactionServiceTest {
             service.handleTransaction(sixth);
             fail();
         } catch (TransactionException te) {
-            assertEquals("this transaction has a timestamp too different compared to our system !", te.getMessage());
+            assertTrue(te.getMessage().contains("this transaction has a timestamp too different compared to our system !"));
         }
     }
 

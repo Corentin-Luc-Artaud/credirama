@@ -39,7 +39,7 @@ public class TimeService {
             return Long.parseLong(restTemplate.getForEntity(url.toString(), String.class).getBody());
         } catch (Exception e) {
             mLogger.error(e.getMessage());
-            return new Date().getTime();
+            return LocalDateTime.now(UTC).toInstant(ZoneOffset.ofHours(0)).toEpochMilli();
         }
     }
 
@@ -47,7 +47,7 @@ public class TimeService {
         try {
             URL url = new URL(this.url + "recover");
             RestTemplate restTemplate = new RestTemplate();
-            restTemplate.postForObject(url.toString(), null, String.class);
+            restTemplate.postForObject(url.toString(), "", String.class);
         } catch (MalformedURLException e) {
             mLogger.error(e.getMessage());
         }

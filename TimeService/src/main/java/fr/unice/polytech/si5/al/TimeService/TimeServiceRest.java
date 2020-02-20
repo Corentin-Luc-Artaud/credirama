@@ -2,7 +2,6 @@ package fr.unice.polytech.si5.al.TimeService;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.logging.Logger;
 
@@ -36,7 +35,7 @@ public class TimeServiceRest {
         return "OK";
     }
 
-    @PostMapping("/fail")
+    @PostMapping(value = "/fail")
     public String failNow() {
 
         curTimeMillis = curTimeMillis - (4 * 60 * 1000);
@@ -45,7 +44,7 @@ public class TimeServiceRest {
         return "OK";
     }
 
-    @PostMapping("/recover")
+    @PostMapping(value = "/recover")
     public String Recover() {
         //RestTemplate resttemplate = new RestTemplate();
         //this.curTimeMillis = Long.parseLong(resttemplate.getForEntity(recoverUrl, String.class).getBody());
