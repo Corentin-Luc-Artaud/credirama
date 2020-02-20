@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 
@@ -50,9 +50,9 @@ public class TemporaryDemoGenerator {
         System.out.println("\n -- " + client.toString());
 
 
-        return;
         // PUBLISH TRANSACTIONS
-        /*try {
+        try {
+            setTime(first);
             publish(new Transaction(client, 200, first), "First transaction (Success)");
             publish(new Transaction(client, 200, second), "Second transaction (Success)");
             publish(new Transaction(client, 200, third), "Third transaction (Fail, too fast)");
@@ -62,7 +62,7 @@ public class TemporaryDemoGenerator {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     @SneakyThrows
@@ -82,11 +82,10 @@ public class TemporaryDemoGenerator {
     @SneakyThrows
     private static void publishToFail(Transaction transaction) {
 
-        publish(transaction, "");
-        /*Thread.sleep(100);
+        Thread.sleep(100);
         System.out.println("\n --- Publishing Sixth transaction (Fail, timeservice)");
 
-        new RestTemplate().postForObject(new URL(HOST + TIME_SERVICE + "/fail").toString(), null, void.class);
+        new RestTemplate().postForObject(new URL(HOST + TIME_SERVICE + "/fail").toString(), null, String.class);
 
         try {
             new RestTemplate().postForObject(new URL(HOST + TRANSACTIONS).toString(), transaction, String.class);
@@ -94,7 +93,7 @@ public class TemporaryDemoGenerator {
             System.err.println(e.getMessage());
         }
 
-        System.out.println();*/
+        System.out.println();
     }
 
     private static void setTime(LocalDateTime time) {
@@ -103,7 +102,7 @@ public class TemporaryDemoGenerator {
                     try {
                         URL url = new URL(HOST + __);
                         RestTemplate restTemplate = new RestTemplate();
-                        long millis = getMillis(time);
+                        long millis = toLong(time);
                         restTemplate.postForEntity(url.toString(), millis, String.class);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -126,7 +125,8 @@ public class TemporaryDemoGenerator {
         }
     }
 
-    private static long getMillis(LocalDateTime localDateTime) {
-        return localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    private static long toLong(LocalDateTime ldt) {
+        return ldt.toInstant(ZoneOffset.ofHours(0)).toEpochMilli();
     }
+
 }

@@ -29,6 +29,10 @@ public class ClientService {
     public String addNewClient(Client client) {
         try {
             root_logger.info(client);
+
+            System.err.println(System.getenv().keySet());
+            System.err.println(System.getenv("locale"));
+
             client.setCreationTime(timeService.getCurrentTime(), "UTC");
             long idNewClient = clientRegisterer.addNewClient(client);
             long idAccount = accountCreator.createNewAccount(idNewClient);
@@ -37,6 +41,7 @@ public class ClientService {
             return "{\"status\":\"OK\", \"accountID\":" + idAccount + ", \"clientID\":" + idNewClient + "}";
 
         } catch (Exception e) {
+            e.printStackTrace();
             return "{\"status\":\"ERROR\", \"cause\":\"" + Arrays.toString(e.getStackTrace()) + "\"}";
         }
     }

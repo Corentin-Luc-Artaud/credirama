@@ -40,7 +40,6 @@ public class Client {
     @NotNull
     double weight;
 
-
     long clientcreationTime;
     String zone;
 

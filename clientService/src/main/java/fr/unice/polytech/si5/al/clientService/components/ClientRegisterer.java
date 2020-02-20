@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,7 +46,7 @@ public class ClientRegisterer {
 
         long currentTime = timeService.getCurrentTime();
 
-        String isoTime = simpleDate.format(Timestamp.valueOf(new Date(currentTime).toString()));
+        String isoTime = simpleDate.format(new Timestamp(currentTime));
         System.out.println(currentTime);
         System.out.println(isoTime);
         CrediramaEvent eventMessage = CrediramaEvent.builder()

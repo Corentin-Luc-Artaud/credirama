@@ -34,11 +34,12 @@ public class TimeServiceRest {
     }
 
     @PostMapping("/fail")
-    public void failNow() {
+    public String failNow() {
 
         curTimeMillis = curTimeMillis - (4 * 60 * 1000);
         System.out.println("---- Fail time is now " + curTimeMillis + " ----");
         failValue = -1;
+        return "OK";
     }
 
     @PostMapping("/recover")
