@@ -43,11 +43,12 @@ public class TimeServiceRest {
     }
 
     @PostMapping("/recover")
-    public void Recover() {
+    public String Recover() {
         RestTemplate resttemplate = new RestTemplate();
-        this.curTimeMillis = Long.parseLong(resttemplate.getForEntity(recoverUrl.toString(), String.class).getBody());
+        this.curTimeMillis = Long.parseLong(resttemplate.getForEntity(recoverUrl, String.class).getBody());
         failValue = Math.random() * 100;
         System.out.println("---- Recover time is now " + curTimeMillis + " ----");
+        return "OK";
     }
 
     @GetMapping(value = "/getFail")

@@ -47,7 +47,7 @@ public class TimeService {
         try {
             URL url = new URL(this.url + "recover");
             RestTemplate restTemplate = new RestTemplate();
-            restTemplate.postForEntity(url.toString(), null, Void.class);
+            restTemplate.postForObject(url.toString(), null, String.class);
         } catch (MalformedURLException e) {
             mLogger.error(e.getMessage());
         }

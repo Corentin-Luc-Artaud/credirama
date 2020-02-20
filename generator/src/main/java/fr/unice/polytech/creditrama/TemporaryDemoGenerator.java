@@ -36,8 +36,8 @@ public class TemporaryDemoGenerator {
         LocalDateTime first = LocalDateTime.now(UTC);
         LocalDateTime second = first.plus(1200, ChronoUnit.MILLIS);
         LocalDateTime third = second.plus(100, ChronoUnit.MILLIS);
-        LocalDateTime fourth = first.plusMinutes(1);
-        LocalDateTime fifth = first.minusMinutes(1);
+        LocalDateTime fourth = first.plusMinutes(2);
+        LocalDateTime fifth = first.minusMinutes(2);
         LocalDateTime sixth = first;
 
 
@@ -58,7 +58,7 @@ public class TemporaryDemoGenerator {
             publish(new Transaction(client, 200, third), "Third transaction (Fail, too fast)");
             publish(new Transaction(client, 200, fourth), "Fourth transaction (Fail, in future)");
             publish(new Transaction(client, 200, fifth), "Fifth transaction (Fail, in past)");
-            publishToFail(new Transaction(client, 200, sixth));
+            //publishToFail(new Transaction(client, 200, sixth));
 
         } catch (Exception e) {
             e.printStackTrace();
