@@ -97,7 +97,7 @@ public class TemporaryDemoGenerator {
     }
 
     private static void setTime(LocalDateTime time) {
-        Arrays.asList(TIME_SERVICE, ATOMIC_TIME_SERVICE)
+        Arrays.asList(TIME_SERVICE) //, ATOMIC_TIME_SERVICE)
                 .forEach(__ -> {
                     try {
                         URL url = new URL(HOST + __);

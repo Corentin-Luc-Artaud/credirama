@@ -21,7 +21,7 @@ public class App {
 
     private static final Logger logger = LogManager.getLogger(App.class);
 
-    public static void main(String[] args) throws IOException {
+    /*public static void main(String[] args) throws IOException {
         String host = args.length != 0 ? args[0] : "http://localhost:";
 
         createBatch(50).forEach(client -> {
@@ -70,7 +70,11 @@ public class App {
                         );
             } catch (Exception e) {
                 e.printStackTrace();
-            }*/
+            }
         });
+    }*/
+
+    public static void main(String[] args) {
+        TemporaryDemoGenerator.main(args);
     }
 }

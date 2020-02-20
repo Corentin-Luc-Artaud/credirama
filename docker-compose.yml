@@ -122,15 +122,15 @@ services:
     ports:
       - "8081:8081"
 
-  atomic-time-service:
-    container_name: atomicclock
-    build:
-      context: TimeService
-    image: timeservice:latest
-    expose:
-      - 8081
-    ports:
-      - "9081:8081"
+  # atomic-time-service:
+  #   container_name: atomicclock
+  #   build:
+  #     context: TimeService
+  #   image: timeservice:latest
+  #   expose:
+  #     - 8081
+  #   ports:
+  #     - "9081:8081"
 
   ############################################################
 
@@ -181,9 +181,9 @@ services:
       - client-service-us
       - time-service
       - analyst-service
-      - atomic-time-service
+      #- atomic-time-service
     command:
-      - atomic-time-service:8081
+      #- atomic-time-service:8081
       - time-service:8081
       - client-service-fr:8080
       - client-service-us:8080

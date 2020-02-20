@@ -13,8 +13,10 @@ public class TimeServiceRest {
     @Value("${failpercentage:5}") // default 1/20
     private double percentage_of_fail;
 
-    @Value("${recoverUrl:http://localhost:9081/}")
-    private String recoverUrl;
+    // @Value("${recoverUrl:http://localhost:9081/}")
+    // private String recoverUrl;
+
+    private long recoverTime;
 
     private long curTimeMillis;
     private double failValue;
@@ -30,6 +32,7 @@ public class TimeServiceRest {
         System.out.println("---- Accessed POST - " + timestamp + " ----");
         failValue = Math.random() * 100;
         curTimeMillis = timestamp;
+        recoverTime = timestamp;
         return "OK";
     }
 
@@ -44,8 +47,9 @@ public class TimeServiceRest {
 
     @PostMapping("/recover")
     public String Recover() {
-        RestTemplate resttemplate = new RestTemplate();
-        this.curTimeMillis = Long.parseLong(resttemplate.getForEntity(recoverUrl, String.class).getBody());
+        //RestTemplate resttemplate = new RestTemplate();
+        //this.curTimeMillis = Long.parseLong(resttemplate.getForEntity(recoverUrl, String.class).getBody());
+        this.curTimeMillis = recoverTime;
         failValue = Math.random() * 100;
         System.out.println("---- Recover time is now " + curTimeMillis + " ----");
         return "OK";
