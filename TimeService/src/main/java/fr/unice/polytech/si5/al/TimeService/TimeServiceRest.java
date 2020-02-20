@@ -13,7 +13,7 @@ public class TimeServiceRest {
     @Value("${failpercentage:5}") // default 1/20
     private double percentage_of_fail;
 
-    @Value("${recoverUrl:http://atomicclock:9081/}")
+    @Value("${recoverUrl:http://localhost:9081/}")
     private String recoverUrl;
 
     private long curTimeMillis;
