@@ -22,8 +22,9 @@ public class ClientController {
     public ResponseEntity newClientRegisters(@Valid @RequestBody Client client) {
 
         System.out.println("Accessed POST");
-
-        return new ResponseEntity<>(clientService.addNewClient(client), HttpStatus.OK);
+        String s = clientService.addNewClient(client);
+        System.out.println(s);
+        return new ResponseEntity<>(s, HttpStatus.OK);
     }
 
     @GetMapping(value = "/")

@@ -50,4 +50,14 @@ FLAG GREEN
 Status at 11-02-2020
 - For Database fail-over, we have both systems, we need tests and comparison.
 - For timezone management we have the implementation, we need to modify the docker-compose.yaml to add an instance of timeservice 
-atomic time and test the complete infrastructure
+atomic time and test the complete infrastructure  
+FLAG GREEN
+
+---
+
+Status at 18-02-2020
+- For Database fail-over and data recovery : the third and final solution is implemented
+- For timezone management: it's finished, we are testing the integration with the whole  
+FLAG GREEN
+
+

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.ZoneId;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static fr.unice.polytech.creditrama.Utils.randIntBetween;
@@ -14,8 +15,8 @@ public class TimeFactory {
 
     public static LocalDateTime generateTimeStamp(LocalDate birth) {
 
-        long minimum = now().minusYears(8).toLocalDate().toEpochDay();
-        long maximum = now().minusYears(3).toLocalDate().toEpochDay();
+        long minimum = now(ZoneId.of("UTC")).minusYears(8).toLocalDate().toEpochDay();
+        long maximum = now(ZoneId.of("UTC")).minusYears(3).toLocalDate().toEpochDay();
 
         minimum = max(minimum, birth.plusYears(5).toEpochDay());
 

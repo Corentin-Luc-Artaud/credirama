@@ -134,7 +134,7 @@
                 <configuration>
                     <archive>
                     <manifest>
-                        <mainClass>fr.unice.polytech.creditrama.App</mainClass>
+                        <mainClass>fr.unice.polytech.creditrama.TemporaryDemoGenerator</mainClass>
                     </manifest>
                     </archive>
                     <descriptorRefs>

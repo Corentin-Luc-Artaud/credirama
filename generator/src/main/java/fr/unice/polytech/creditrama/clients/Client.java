@@ -159,12 +159,10 @@ public class Client {
 
     @Override
     public String toString() {
-        return '{' +
-                "\"firstName\":\"" + firstName + '\"' +
-                "\"lastName\":\"" + lastName + '\"' +
-                "\"city\":\"" + city + '\"' +
-                "\"weight\":" + weight +
-                "\"height\":" + height +
+        return "Client{" +
+                "clientID=" + clientID +
+                ", accountID=" + accountID +
+                ", firstName='" + firstName + '\'' +
                 '}';
     }
 }

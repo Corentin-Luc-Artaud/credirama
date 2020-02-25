@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 import static fr.unice.polytech.creditrama.ClientFactory.createBatch;
 
@@ -20,7 +21,7 @@ public class App {
 
     private static final Logger logger = LogManager.getLogger(App.class);
 
-    public static void main(String[] args) throws IOException {
+    /*public static void main(String[] args) throws IOException {
         String host = args.length != 0 ? args[0] : "http://localhost:";
 
         createBatch(50).forEach(client -> {
@@ -32,7 +33,7 @@ public class App {
             try {
                 URL url = new URL(host + "8081/");
                 RestTemplate restTemplate = new RestTemplate();
-                String time = creationTime.toString();
+                long time = creationTime.toEpochSecond(ZoneOffset.ofHours(0));
                 logger.info("Setting time to " + time);
                 restTemplate.postForEntity(url.toString(), time, String.class);
             } catch (Exception e) {
@@ -69,7 +70,11 @@ public class App {
                         );
             } catch (Exception e) {
                 e.printStackTrace();
-            }*/
+            }
         });
+    }*/
+
+    public static void main(String[] args) {
+        TemporaryDemoGenerator.main(args);
     }
 }

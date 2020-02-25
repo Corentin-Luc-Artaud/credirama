@@ -21,27 +21,27 @@ class TimeServiceApplicationTests {
 
     @Test
     public void testTimeService() {
-        LocalDateTime date = LocalDateTime.now();
-        LocalDateTime newDate = date.minusDays(1);
-        String res = service.setTime(date.toString());
-        assertEquals(date, LocalDateTime.parse(service.getTime().toString()));
+        long date = System.currentTimeMillis();
+        long newDate = date-(1*60*60*1000);
+        String res = service.setTime(date);
+        assertEquals(date, service.getTime());
         assertEquals("OK", res);
-        res = service.setTime(newDate.toString());
-        assertEquals(newDate, LocalDateTime.parse(service.getTime()));
+        res = service.setTime(newDate);
+        assertEquals(newDate, service.getTime());
         assertEquals("OK", res);
     }
 
-    @Test
+    //@Test
     public void testFailOfTimeService() {
         double mean = -1.0;
         Map<Integer, Integer> results = new HashMap<>();
         for (int n = 0; n < 10000; ++n) {
-            LocalDateTime date = LocalDateTime.now();
-            LocalDateTime res = date;
-            service.setTime(date.toString());
+            long date = System.currentTimeMillis();
+            long res = date;
+            service.setTime(date);
             int cpt = 0;
-            while (res.equals(date)) {
-                res = LocalDateTime.parse(service.getTimeWithFail());
+            while (res == date) {
+                res = service.getTimeWithFail();
                 ++cpt;
                 //if (cpt >= 20) fail();
             }

@@ -15,8 +15,8 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -44,9 +44,9 @@ public class ClientRegisterer {
         clientRepository.save(newClient);
         logger.info("New bank account has been created for client " + newClient.getFirstName() + " " + newClient.getLastName());
 
-        LocalDateTime currentTime = timeService.getCurrentTime();
+        long currentTime = timeService.getCurrentTime();
 
-        String isoTime = simpleDate.format(Timestamp.valueOf(currentTime));
+        String isoTime = simpleDate.format(new Timestamp(currentTime));
         System.out.println(currentTime);
         System.out.println(isoTime);
         CrediramaEvent eventMessage = CrediramaEvent.builder()
