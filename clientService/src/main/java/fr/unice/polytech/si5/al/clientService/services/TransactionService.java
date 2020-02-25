@@ -4,12 +4,14 @@ import fr.unice.polytech.si5.al.clientService.exceptions.TransactionException;
 import fr.unice.polytech.si5.al.clientService.models.BankAccount;
 import fr.unice.polytech.si5.al.clientService.models.Transaction;
 import fr.unice.polytech.si5.al.clientService.repositories.BankAccountRepository;
+import fr.unice.polytech.si5.al.clientService.repositories.FailRepository;
 import fr.unice.polytech.si5.al.clientService.repositories.TransactionRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Optional;
+
+import static java.time.temporal.ChronoUnit.MILLIS;
 
 @Service
 public class TransactionService {
@@ -17,11 +19,13 @@ public class TransactionService {
     private final BankAccountRepository bankAccountRepository;
     private final TransactionRepository transactionRepository;
     private final TimeService timeService;
+    private final FailRepository failRepository;
 
-    public TransactionService(BankAccountRepository bankAccountRepository, TransactionRepository transactionRepository, TimeService timeService) {
+    public TransactionService(BankAccountRepository bankAccountRepository, TransactionRepository transactionRepository, TimeService timeService, FailRepository failRepository) {
         this.bankAccountRepository = bankAccountRepository;
         this.transactionRepository = transactionRepository;
         this.timeService = timeService;
+        this.failRepository = failRepository;
     }
 
     public void handleTransaction(Transaction transaction) throws TransactionException {
@@ -65,7 +69,7 @@ public class TransactionService {
         LocalDateTime prevTime = previous.localDateTime();
         LocalDateTime currentTime = current.localDateTime();
 
-        long timeSpan = ChronoUnit.MILLIS.between(prevTime, currentTime);
+        long timeSpan = MILLIS.between(prevTime, currentTime);
 
         if (timeSpan < 1000) {
             throw new TransactionException("new transaction too fast on same account");
@@ -73,10 +77,21 @@ public class TransactionService {
     }
 
     private void checkTimeSynchro(Transaction transaction) throws TransactionException {
-        long timeSpan = ChronoUnit.MILLIS.between(transaction.localDateTime(), timeService.getCurrentTime());
+        long timeSpan = transaction.getTransactionTime() - timeService.getCurrentTime();
 
-        if (Math.abs(timeSpan) > 3000) {
-            throw new TransactionException("this transaction has a timestamp too different compared to our system !");
+        if (Math.abs(timeSpan) > 60 * 1000) {
+            failRepository.save(transaction);
+            introspection();
+            throw new TransactionException("this transaction has a timestamp too different compared to our system !\n" + "expected : " + timeService.getCurrentTime() + "\n" + "actual   : " + transaction.getTransactionTime());
+        }
+    }
+
+    private void introspection() {
+        long count = failRepository.count();
+
+        if (count > 3) {
+            failRepository.deleteAll();
+            timeService.recoverAtomicTime();
         }
     }
 }

@@ -28,7 +28,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TransactionServiceTest {
+public class TransactionServiceIntegrationTest {
 
     @MockBean
     private TransactionService service;
@@ -58,12 +58,14 @@ public class TransactionServiceTest {
         bankAccountRepo = mock(BankAccountRepository.class);
         transactionRepo = mock(TransactionRepository.class);
         failRepository = mock(FailRepository.class);
-        timeService = mock(TimeService.class);
+        timeService = new TimeService();
+        timeService.setUrl("http://localhost:8081/");
 
         setupObjectsInstances();
         setupMocks();
 
         service = new TransactionService(bankAccountRepo, transactionRepo, timeService, failRepository);
+        timeService.silentRecover();
     }
 
     private void setupObjectsInstances() {
@@ -107,8 +109,6 @@ public class TransactionServiceTest {
                     }
                 });
 
-        when(timeService.getCurrentTime()).thenReturn(LocalDateTime.now(UTC).toInstant(ZoneOffset.ofHours(0)).toEpochMilli());
-
         when(failRepository.saveAll(anyList())).then(methodCall -> {
             failedTransactions.addAll(methodCall.getArgument(0));
             return failedTransactions;
@@ -127,18 +127,6 @@ public class TransactionServiceTest {
             return null;
         }).when(failRepository).deleteAll();
 
-        Mockito.doAnswer(__ -> {
-            recoverTimeService();
-            return null;
-        }).when(timeService).recoverAtomicTime();
-    }
-
-    private void mockTimeServiceToFail() {
-        when(timeService.getCurrentTime()).thenReturn(LocalDateTime.now(UTC).minusMinutes(4).toInstant(ZoneOffset.ofHours(0)).toEpochMilli());
-    }
-
-    private void recoverTimeService() {
-        when(timeService.getCurrentTime()).thenReturn(LocalDateTime.now(UTC).toInstant(ZoneOffset.ofHours(0)).toEpochMilli());
     }
 
     @Test
@@ -187,7 +175,7 @@ public class TransactionServiceTest {
 
     @Test
     public void transactionWithTimeServiceFail() {
-        mockTimeServiceToFail();
+        timeService.fail();
 
         try {
             // It should fail because too de-synchronized with our service
@@ -200,11 +188,14 @@ public class TransactionServiceTest {
 
     @Test
     public void triggeringRecovery() throws TransactionException {
+        timeService.silentRecover();
+        timeService.getCurrentTime();
+
         failRepository.saveAll(Arrays.asList(first, second, third));//, fourth, fifth));
 
         assertEquals(3, failRepository.count());
 
-        mockTimeServiceToFail();
+        timeService.fail();
 
         // It should fail because too de-synchronized with our service
         // This will trigger the time-service recovery
@@ -220,6 +211,4 @@ public class TransactionServiceTest {
         assertEquals(timeService.getCurrentTime(), LocalDateTime.now(UTC).toInstant(ZoneOffset.ofHours(0)).toEpochMilli(), 10);
         assertEquals(0, failRepository.count());
     }
-
-
 }

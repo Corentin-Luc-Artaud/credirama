@@ -79,7 +79,7 @@ public class CreateVisualizationService {
 
         logger.info(global.toString());
         Kibana kibana = new Kibana();
-        kibana.addVisualisation(global.toString());
+        kibana.addVisualisation(global.toString(), "");
     }
 
 }

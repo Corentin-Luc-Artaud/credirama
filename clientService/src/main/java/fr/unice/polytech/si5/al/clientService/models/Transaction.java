@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -32,16 +32,19 @@ public class Transaction {
      */
     double amount;
 
-    long transactionTime = System.currentTimeMillis();
+    long transactionTime;
+    String zone;
 
-    public Transaction(long accountID, long clientID, double amount, LocalDateTime time) {
+    public Transaction(long accountID, long clientID, double amount, long creationTime, String zone) {
         this.accountID = accountID;
         this.clientID = clientID;
         this.amount = amount;
-        this.transactionTime = time.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        this.transactionTime = creationTime;
+        this.zone = zone;
     }
 
     public LocalDateTime localDateTime() {
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(transactionTime), ZoneId.systemDefault());
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(transactionTime), ZoneOffset.of(zone));
     }
+
 }
