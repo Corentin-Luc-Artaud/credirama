@@ -44,3 +44,10 @@ Status at 04-02-2020
 - For database failover, we have implemented the database replication with mysql and hproxy. We will work now on replicating using a CDC, kafka and another database to compare both
 - For the timezone managment, we pass all the dates with UTC format and we add a configurable local format  
 FLAG GREEN
+
+---
+
+Status at 11-02-2020
+- For Database fail-over, we have both systems, we need tests and comparison.
+- For timezone management we have the implementation, we need to modify the docker-compose.yaml to add an instance of timeservice 
+atomic time and test the complete infrastructure
