@@ -64,5 +64,9 @@ FLAG GREEN
 Status at 25-02-2020
 - All changes were pushed
 - slides are added
-- Demo videos for DB crash problematic uploaded in youtube.
+- Demo videos for DB crash problematic uploaded in youtube.  
+
+    Démo 1 : Proving that the data is replicated from kafka beteen read and writes databases https://www.youtube.com/watch?v=s4TL4Zx0brc  
+    Démo 2 : Same demo than the presentation, MySQL1 crash simulation MySQL1, MySQL2 write databases, and MySQL3, MySQL4 read databases. If MySQL1 crashes, MySQL2 takes the lead for writes database and the replication via kafka is still effective/working. https://www.youtube.com/watch?v=Ap4A5O-Hx7k
+
 FLAG GREEN
