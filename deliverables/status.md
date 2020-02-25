@@ -60,4 +60,9 @@ Status at 18-02-2020
 - For timezone management: it's finished, we are testing the integration with the whole  
 FLAG GREEN
 
-
+---
+Status at 25-02-2020
+- All changes were pushed
+- slides are added
+- Demo videos for DB crash problematic uploaded in youtube.
+FLAG GREEN
