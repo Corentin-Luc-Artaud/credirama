@@ -5,7 +5,7 @@ from faker import Faker
 def create_fake_users():
     fake = Faker()
     users = []
-    for _ in range(0, 10):
+    for _ in range(0, 20):
         name = fake.name()
         first_name = name.split(" ")[0]
         last_name = name.split(" ")[1]
